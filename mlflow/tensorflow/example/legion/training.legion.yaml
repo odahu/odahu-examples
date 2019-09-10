@@ -1,0 +1,18 @@
+kind: ModelTraining
+id: tensorflow
+spec:
+  model:
+    name: tensorflow
+    version: 2.0
+  toolchain: mlflow
+  entrypoint: main
+  workDir: mlflow/tensorflow/example
+  resources:
+    limits:
+      cpu: 2024m
+      memory: 2024Mi
+    requests:
+      cpu: 1024m
+      memory: 1024Mi
+  vcsName: legion-examples
+  
