@@ -12,6 +12,7 @@ import tensorflow as tf
 from tensorflow.python.saved_model import tag_constants
 import mlflow.tensorflow
 
+
 # Enable auto-logging to MLflow to capture TensorBoard metrics.
 # mlflow.tensorflow.autolog()
 
@@ -52,6 +53,13 @@ def main(argv):
             df = pd.DataFrame(data=x_test, columns=["features"] * x_train.shape[1])
             # Predicting on the loaded Python Function
             predict_df = pyfunc_model.predict(df)
+
+            # Persist samples (input and output)
+            df.head().to_pickle('head_input.pkl')
+            mlflow.log_artifact('head_input.pkl', 'model')
+            predict_df.head().to_pickle('head_output.pkl')
+            mlflow.log_artifact('head_output.pkl', 'model')
+
             predict_df['original_labels'] = y_test
             print(predict_df)
         finally:
