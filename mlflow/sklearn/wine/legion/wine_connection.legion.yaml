@@ -1,8 +1,8 @@
 kind: Connection
-id: wine
+id: gcs-hl7fwa-test-parquetfile
 spec:
   type: gcs
-  uri: gs://gke-legion-vitalik-data-store/data/wine-quality.csv
-  region: us-east1
+  uri: gs://epmc-bdcc-mvplatform-demo-prepared/part-00000-f3b01531-698e-4b1a-8fd3-d74832e7d650-c000.snappy.parquet
+  region: or2-msq-epmc-bdcc-t1iylu
   keySecret: |
     *** secret ***

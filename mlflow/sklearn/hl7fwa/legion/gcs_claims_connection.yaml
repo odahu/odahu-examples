@@ -1,0 +1,8 @@
+kind: Connection
+id: hl7fwa-claims-prepared
+spec:
+  type: gcs
+  uri: gs://<your bucket name>/mvplatform-d-projecta-bucket/claims.snappy.parquet/
+  region: us-east1
+  keySecret: |
+    *** secret ***

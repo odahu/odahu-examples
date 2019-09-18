@@ -1,0 +1,25 @@
+kind: ModelTraining
+id: hl7fwa
+spec:
+  model:
+    name: hl7fwa
+    version: 1.0
+  toolchain: mlflow
+  entrypoint: main
+  workDir: mlflow/sklearn/hl7fwa
+  data:
+    - connName: hl7fwa-claims-prepared
+      localPath: mlflow/sklearn/hl7fwa/claims.snappy.parquet
+    - connName: hl7fwa-kafka-parquetfile
+      localPath: mlflow/sklearn/hl7fwa/test.snappy.parquet
+  hyperParameters:
+    alpha: "1.0"
+  resources:
+    limits:
+      cpu: 2024m
+      memory: 2024Mi
+    requests:
+      cpu: 1024m
+      memory: 1024Mi
+  vcsName: legion-examples
+  
