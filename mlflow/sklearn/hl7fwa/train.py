@@ -11,80 +11,134 @@ import numpy as np
 import pandas as pd
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import load_iris
+from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve
+from sklearn.model_selection import train_test_split
+
+log_id = 'hl7fwa-randomforest'
+
+
+def parse_input_arguments():
+    global args
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--num-estimators')
+    parser.add_argument('--random-state')
+    parser.add_argument('--pickle-size')
+    parser.add_argument('--test-pct')
+    try:
+        args = parser.parse_args()
+    except:
+        args = argparse.Namespace(num_estimators=2, random_state=40, pickle_size=8192, test_pct=.75)
+
+
+def is_suspicious():
+    """For now we just compare against the hard-coded feeder value"""
+    # TODO calculate off of something like distance from mean(per drug) by stddev
+    return merged['amount'] > 42
+
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore")
-    np.random.seed(40)
 
-    # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
+    warnings.filterwarnings("ignore")
+    parse_input_arguments()
+
+    num_estimators = int(args.num_estimators or 2)
+    random_state = int(args.random_state or 0)
+    pickle_size = int(args.pickle_size or 8192)
+    test_pct = float(args.test_pct or .75)
+
+    # DATA LOAD
+    test_data_dir = '/Users/jason/scratch/hl7fwa-testdata/'
+    hl7_path = os.path.join(test_data_dir, 'kafka_example_waste.parquet')
+    claims_path = os.path.join(test_data_dir, 'pg_example_waste.parquet')
+
+    # TODO: read training data from GCS instead
     #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
     #    df = pd.read_csv(wine_path)
 
-    iris = load_iris()
-    print(iris)
-    df = pd.DataFrame(iris.data, columns=iris.feature_names)
+    hl7_df = pd.read_parquet(path=hl7_path, engine='pyarrow')
+    claims_df = pd.read_parquet(path=claims_path, engine='pyarrow')
 
-    # Add a new column with the species names, this is what we are going to try to predict
-    df['species'] = pd.Categorical.from_codes(iris.target, iris.target_names)
-    print('With species...')
-    print(df.head())
+    # DATA PROCESSING
 
-    # Create a new column that for each row, generates a random number between 0 and 1, and
-    # if that value is less than or equal to .75, then sets the value of that cell as True
-    # and false otherwise. This is a quick and dirty way of randomly assigning some rows to
-    # be used as the training data and some as the test data.
-    df['is_train'] = np.random.uniform(0, 1, len(df)) <= .75
-    print('With is_train...')
-    print(df.head())
-    # Create two new dataframes, one with the training rows, one with the test rows
-    train, test = df[df['is_train'] == True], df[df['is_train'] == False]
-    # Show the number of observations for the test and training dataframes
-    print('Number of observations in the training data:', len(train))
-    print('Number of observations in the test data:', len(test))
-    # Create a list of the feature column's names
-    features = df.columns[:4]  # LOOK HERE
-    print('Feature names:')
-    print(features)
-    # train['species'] contains the actual species names. Before we can use it,
-    # we need to convert each species name into a digit. So, in this case there
-    # are three species, which have been coded as 0, 1, or 2.
-    y = pd.factorize(train['species'])[0]
-    print('Make species numeric')
-    print(y)
+    merged = pd.merge(hl7_df, claims_df, on='patientId', how='inner') \
+        .drop(['id'], axis=1)
+    merged['amount'] = merged['price'].astype(int)
+    # the is_suspicious column is what we will be predicting
+    merged['is_suspicious'] = is_suspicious()
+    df = merged.drop(['price'], axis=1)
+    df['is_train'] = np.random.uniform(0, 1, len(df)) <= test_pct
+    factorizedDrugs = pd.factorize(df['drug'])[0]
+    factorizedSuspicions = pd.factorize(df['is_suspicious'])[0]
+    df.insert(loc=len(df.columns), column='drug_number', value=factorizedDrugs)
+    df.insert(loc=len(df.columns), column='suspicion_number', value=factorizedSuspicions)
+    train, test = df[df['is_train']], df[df['is_train'] == False]
+    df = df.drop(['drug', 'is_suspicious', 'is_train'], axis=1)
+    labels = df.copy().pop('suspicion_number')
+    x, y, train_labels, test_labels = train_test_split(df, labels, stratify=labels, test_size=test_pct, random_state=random_state)
 
-    #    alpha = float(args.alpha or 1.0)
-    #    l1_ratio = float(args.l1_ratio or 2.0)
+    # Show the size of test and training dfs
+    print('Training data count:', len(train))
+    print('Test data count:', len(test))
+    features = df.columns[0:4]
+    print('Feature names: {}'.format(features))
 
     with mlflow.start_run():
-        clf = RandomForestClassifier(n_jobs=2, random_state=0)
-        print('Fitting...')
-        clf.fit(train[features], y)
-        print('Fit.')
+        classifier = RandomForestClassifier(n_jobs=num_estimators,
+                                            random_state=random_state)
 
-        print('Predicting...')
-        clf.predict(test[features])
-        print('Predicted.')
-        print(clf.predict_proba(test[features])[0:10])
+        # TODO these could go into MLProject as configurable parameters
+        # class_weight=None, criterion='gini', max_depth=None,
+        # max_features=None, max_leaf_nodes=None,
+        # min_impurity_decrease=0.0, min_impurity_split=None,
+        # min_samples_leaf=1, min_samples_split=2,
+        # min_weight_fraction_leaf=0.0, presort=False, random_state=50,
+        # splitter='best'
 
-        ##        (rmse, mae, r2) = (1.0,2.0,3.0)  # eval_metrics(test_y, predicted_qualities)
+        classifier.fit(train[features], pd.factorize(train['suspicion_number'])[0])
 
-        #        print(f"Elasticnet model (alpha={alpha}, l1_ratio={l1_ratio}):")
-        #        print(f"  RMSE: {rmse}")
-        #        print(f"  MAE: {mae}")
-        #        print(f"  R2: {r2}")
+        train_preds = classifier.predict(train[features])
+        test_preds = classifier.predict(test[features])
+        train_probs = classifier.predict_proba(train[features])
+        test_probs = classifier.predict_proba(test[features])
 
-        ##        mlflow.log_param("alpha", alpha)
-        ##        mlflow.log_param("l1_ratio", l1_ratio)
-        ##        mlflow.log_metric("rmse", rmse)
-        ##        mlflow.log_metric("r2", r2)
-        ##        mlflow.log_metric("mae", mae)
-        log_id = 'randomforest5'
+        print(len(test_probs))
 
-        mlflow.sklearn.log_model(clf, log_id)
+        crosstab = pd.crosstab(test['suspicion_number'],
+                               test_preds,
+                               rownames=['Actual Suspicions'],
+                               colnames=['Predicted Suspicions'])
 
-        # Persist samples (input and output)
-        train.head().to_pickle('head_input.pkl')
+        print(crosstab)
+
+        mlflow.log_param("num_estimators", num_estimators)
+        mlflow.log_param("random_state", random_state)
+        mlflow.log_param("pickle_size", pickle_size)
+        mlflow.log_param("test_pct", test_pct)
+
+        mlflow.sklearn.log_model(classifier, log_id)
+
+        # Model metrics
+        mlflow.log_metric("baseline_recall", recall_score(test_labels, [1 for _ in range(len(test_labels))]))
+        mlflow.log_metric("baseline_precision", precision_score(test_labels, [1 for _ in range(len(test_labels))]))
+        mlflow.log_metric("baseline_roc", 0.5)
+
+        # mlflow.log_metric("results_recall", recall_score(test_labels, test_preds))
+        # mlflow.log_metric("results_precision", precision_score(test_labels, test_preds))
+        # mlflow.log_metric("results_roc", roc_auc_score(test_labels, test_probs))
+        # mlflow.log_metric("train_results_recall", recall_score(labels, train_preds))
+        # mlflow.log_metric("train_results_precision",  precision_score(labels, train_preds))
+        # mlflow.log_metric("train_results_roc", roc_auc_score(labels, train_probs))
+        # Calculate false positive rates and true positive rates
+        # base_fpr, base_tpr, _ = roc_curve(test_labels, [1 for _ in range(len(test_labels))])
+        # model_fpr, model_tpr, _ = roc_curve(test_labels, test_probs)
+        #
+        # mlflow.log_metric("base_fpr", base_fpr)
+        # mlflow.log_metric("base_tpr", base_tpr)
+        # mlflow.log_metric("model_fpr", model_fpr)
+        # mlflow.log_metric("model_tpr", model_tpr)
+
+        # Persist sample data (input and output)
+        train.head(pickle_size).to_pickle('head_input.pkl')
         mlflow.log_artifact('head_input.pkl', log_id)
-        test.head().to_pickle('head_output.pkl')
+        test.head(pickle_size).to_pickle('head_output.pkl')
         mlflow.log_artifact('head_output.pkl', log_id)
