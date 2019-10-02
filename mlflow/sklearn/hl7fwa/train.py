@@ -13,6 +13,8 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve
 from sklearn.model_selection import train_test_split
+import dask.dataframe as dd
+
 
 log_id = 'hl7fwa-randomforest'
 
@@ -52,12 +54,11 @@ if __name__ == "__main__":
     # claims_path = os.path.join(test_data_dir, 'pg_example_waste.parquet')
 
     # TODO: read training data from GCS instead
-    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"kafka_example_sn.snappy.parquet")
     claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
     #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
     #    df = pd.read_csv(wine_path)
 
-    hl7_df = pd.read_parquet(path=hl7_path, engine='pyarrow')
+    hl7_df = dd.read_parquet("gs://epmc-bdcc-mvplatform-demo-prepared/kafka_example_sn.snappy.parquet", engine='pyarrow')
     claims_df = pd.read_parquet(path=claims_path, engine='pyarrow')
 
     # DATA PROCESSING
