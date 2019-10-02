@@ -13,7 +13,6 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import precision_score, recall_score, roc_auc_score, roc_curve
 from sklearn.model_selection import train_test_split
-import dask.dataframe as dd
 
 
 log_id = 'hl7fwa-randomforest'
