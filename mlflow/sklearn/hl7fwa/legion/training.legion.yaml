@@ -8,9 +8,9 @@ spec:
   entrypoint: main
   workDir: mlflow/sklearn/hl7fwa
   data:
-    - connName: hl7fwa-claims-prepared
+    - connName: hl7fwaclaimsprepared
       localPath: mlflow/sklearn/hl7fwa/claims.snappy.parquet
-    - connName: hl7fwa-kafka-parquetfile
+    - connName: hl7fwakafkaparquetfile
       localPath: mlflow/sklearn/hl7fwa/test.snappy.parquet
   hyperParameters:
     alpha: "1.0"

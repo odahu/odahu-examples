@@ -47,11 +47,13 @@ if __name__ == "__main__":
     test_pct = float(args.test_pct or .75)
 
     # DATA LOAD
-    test_data_dir = '/Users/jason/scratch/hl7fwa-testdata/'
-    hl7_path = os.path.join(test_data_dir, 'kafka_example_waste.parquet')
-    claims_path = os.path.join(test_data_dir, 'pg_example_waste.parquet')
+    # test_data_dir = '/Users/jason/scratch/hl7fwa-testdata/'
+    # hl7_path = os.path.join(test_data_dir, 'kafka_example_waste.parquet')
+    # claims_path = os.path.join(test_data_dir, 'pg_example_waste.parquet')
 
     # TODO: read training data from GCS instead
+    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"kafka_example_sn.snappy.parquet")
+    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
     #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
     #    df = pd.read_csv(wine_path)
 

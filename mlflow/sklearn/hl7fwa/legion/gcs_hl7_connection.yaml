@@ -2,7 +2,7 @@ kind: Connection
 id: hl7fwa-kafka-parquetfile
 spec:
   type: gcs
-  uri: gs://<your bucket here>/claims.snappy.parquet/
+  uri: gs://epmc-bdcc-mvplatform-demo-prepared/pg_example_sn.snappy.parquet
   region: us-east1
   keySecret: |
     *** secret ***
