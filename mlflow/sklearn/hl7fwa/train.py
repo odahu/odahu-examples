@@ -69,12 +69,14 @@ if __name__ == "__main__":
     train, test = train_test_split(df)
 
 
-    features = df.columns[0:4]
+    features = df.columns[0:3]
 
     train_x = train.drop(["suspicion_number"], axis=1)
     test_x = test.drop(["suspicion_number"], axis=1)
     train_y = train[["suspicion_number"]]
     test_y = test[["suspicion_number"]]
+    print(features)
+    print(train_x)
 
     alpha = float(args.alpha or 1.0)
     l1_ratio = float(args.l1_ratio or 2.0)
@@ -82,10 +84,9 @@ if __name__ == "__main__":
     with mlflow.start_run():
         classifier = RandomForestClassifier(n_jobs=num_estimators,
                                         random_state=random_state)
-        classifier.fit(train[features], pd.factorize(train['suspicion_number'])[0])
+        classifier.fit(train_x, pd.factorize(train['suspicion_number'])[0])
 
-        predicted_qualities = classifier.predict(test[features])
-        print(np.count_nonzero(predicted_qualities))
+        predicted_qualities = classifier.predict(test_x)
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
 
