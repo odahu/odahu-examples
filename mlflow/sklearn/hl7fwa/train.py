@@ -5,7 +5,7 @@ import warnings
 import mlflow.sklearn
 import numpy as np
 import pandas as pd
-from sklearn.linear_model import ElasticNet
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
 
@@ -16,20 +16,20 @@ def eval_metrics(actual, pred):
     r2 = r2_score(actual, pred)
     return rmse, mae, r2
 
-
 def is_suspicious():
     """For now we just compare against the hard-coded feeder value"""
     # TODO calculate off of something like distance from mean(per drug) by stddev
     return merged['amount'] > 42
 
-num_estimators = 2
-random_state = 0
-pickle_size = 8192
-test_pct = .75
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     np.random.seed(40)
+
+    num_estimators = 2
+    random_state = 0
+    pickle_size = 8192
+    test_pct = .75
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--alpha')
@@ -42,13 +42,8 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
-    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet")
-    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet")
-    #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
-    #    df = pd.read_csv(wine_path)
-
-    hl7_df = pd.read_parquet(path=hl7_path, engine='pyarrow')
-    claims_df = pd.read_parquet(path=claims_path, engine='pyarrow')
+    hl7_df = pd.read_parquet('C://Users//Palina_Ukadzer//Downloads//kafka_example_sn.snappy.parquet', engine='pyarrow')
+    claims_df = pd.read_parquet('C://Users//Palina_Ukadzer//Downloads//pg_example_sn.snappy.parquet', engine='pyarrow')
 
     # DATA PROCESSING
 
@@ -64,24 +59,28 @@ if __name__ == "__main__":
     df.insert(loc=len(df.columns), column='drug_number', value=factorizedDrugs)
     df.insert(loc=len(df.columns), column='suspicion_number', value=factorizedSuspicions)
     train, test = df[df['is_train']], df[df['is_train'] == False]
-    df = df.drop(['drug', 'is_train'], axis=1)
+    df = df.drop(['drug', 'is_suspicious', 'is_train'], axis=1)
     labels = df.copy().pop('suspicion_number')
     train, test = train_test_split(df)
 
-    # The predicted column is "quality" which is a scalar from [3, 9]
-    train_x = train.drop(["is_suspicious"], axis=1)
-    test_x = test.drop(["is_suspicious"], axis=1)
-    train_y = train[["is_suspicious"]]
-    test_y = test[["is_suspicious"]]
+
+    features = df.columns[0:4]
+
+    train_x = train.drop(["suspicion_number"], axis=1)
+    test_x = test.drop(["suspicion_number"], axis=1)
+    train_y = train[["suspicion_number"]]
+    test_y = test[["suspicion_number"]]
 
     alpha = float(args.alpha or 1.0)
     l1_ratio = float(args.l1_ratio or 2.0)
 
     with mlflow.start_run():
-        lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
-        lr.fit(train_x, train_y)
+        classifier = RandomForestClassifier(n_jobs=num_estimators,
+                                        random_state=random_state)
+        classifier.fit(train[features], pd.factorize(train['suspicion_number'])[0])
 
-        predicted_qualities = lr.predict(test_x)
+        predicted_qualities = classifier.predict(test[features])
+        print(np.count_nonzero(predicted_qualities))
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
 
@@ -96,7 +95,7 @@ if __name__ == "__main__":
         mlflow.log_metric("r2", r2)
         mlflow.log_metric("mae", mae)
 
-        mlflow.sklearn.log_model(lr, "model")
+        mlflow.sklearn.log_model(classifier, "model")
 
         # Persist samples (input and output)
         train_x.head().to_pickle('head_input.pkl')
