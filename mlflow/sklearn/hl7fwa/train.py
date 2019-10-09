@@ -42,8 +42,13 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
-    hl7_df = pd.read_parquet('C://Users//Palina_Ukadzer//Downloads//kafka_example_sn.snappy.parquet', engine='pyarrow')
-    claims_df = pd.read_parquet('C://Users//Palina_Ukadzer//Downloads//pg_example_sn.snappy.parquet', engine='pyarrow')
+    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet")
+    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet")
+    #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
+    #    df = pd.read_csv(wine_path)
+
+    hl7_df = pd.read_parquet(path=hl7_path, engine='pyarrow')
+    claims_df = pd.read_parquet(path=claims_path, engine='pyarrow')
 
     # DATA PROCESSING
 
