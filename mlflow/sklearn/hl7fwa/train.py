@@ -8,6 +8,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
+from pathlib import Path
 
 
 def eval_metrics(actual, pred):
@@ -42,8 +43,10 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
-    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet/")
-    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet/")
+    hl7_path_str = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet/")
+    hl7_path = Path(hl7_path_str)
+    claims_path_str = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet/")
+    claims_path = Path(claims_path)
     hl7_df = pd.concat(
         pd.read_parquet(path = parquet_file, engine='pyarrow')
         for parquet_file in hl7_path.glob('*.parquet')
