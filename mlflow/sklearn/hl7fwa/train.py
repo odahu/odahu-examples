@@ -22,7 +22,7 @@ def is_suspicious():
     # TODO calculate off of something like distance from mean(per drug) by stddev
     return merged['amount'] > 42
 
-
+#this is main
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     np.random.seed(40)
