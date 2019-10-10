@@ -2,7 +2,7 @@ kind: Connection
 id: hl7fwa-kafka-parquetfile
 spec:
   type: gcs
-  uri: gs://epmc-bdcc-mvplatform-demo-prepared/test/result_kafka
+  uri: gs://epmc-bdcc-mvplatform-demo-prepared/pg_example_sn.snappy.parquet
   region: us-east1
   keySecret: |
     *** secret ***

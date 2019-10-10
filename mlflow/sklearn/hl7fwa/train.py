@@ -8,7 +8,6 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
-from pathlib import Path
 
 
 def eval_metrics(actual, pred):
@@ -22,7 +21,7 @@ def is_suspicious():
     # TODO calculate off of something like distance from mean(per drug) by stddev
     return merged['amount'] > 42
 
-#this is main
+
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
     np.random.seed(40)
@@ -43,19 +42,8 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
-    hl7_path_str = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet/")
-    hl7_path = Path(hl7_path_str)
-    claims_path_str = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet/")
-    claims_path = Path(claims_path_str)
-    hl7_df = pd.concat(
-        pd.read_parquet(path = parquet_file, engine='pyarrow')
-        for parquet_file in hl7_path.glob('*.parquet')
-    )
-
-    claims_df = pd.concat(
-        pd.read_parquet(path = parquet_file, engine='pyarrow')
-        for parquet_file in claims_path.glob('*.parquet')
-    )
+    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet")
+    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet")
     #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
     #    df = pd.read_csv(wine_path)
 
