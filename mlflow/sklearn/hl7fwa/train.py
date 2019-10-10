@@ -46,7 +46,7 @@ if __name__ == "__main__":
     hl7_path_str = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet/")
     hl7_path = Path(hl7_path_str)
     claims_path_str = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet/")
-    claims_path = Path(claims_path)
+    claims_path = Path(claims_path_str)
     hl7_df = pd.concat(
         pd.read_parquet(path = parquet_file, engine='pyarrow')
         for parquet_file in hl7_path.glob('*.parquet')
