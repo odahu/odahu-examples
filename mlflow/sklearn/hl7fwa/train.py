@@ -61,8 +61,10 @@ if __name__ == "__main__":
     df['is_train'] = np.random.uniform(0, 1, len(df)) <= test_pct
     factorizedDrugs = pd.factorize(df['drug'])[0]
     factorizedSuspicions = pd.factorize(df['is_suspicious'])[0]
-    df.insert(loc=len(df.columns), column='drug_number', value=factorizedDrugs)
+    df.insert(loc=len(df.columns), column='drugId', value=factorizedDrugs)
     df.insert(loc=len(df.columns), column='suspicion_number', value=factorizedSuspicions)
+    df['patientId'] = df['patientId'].astype(int)
+
     train, test = df[df['is_train']], df[df['is_train'] == False]
     df = df.drop(['drug', 'is_suspicious', 'is_train'], axis=1)
     labels = df.copy().pop('suspicion_number')
@@ -75,8 +77,6 @@ if __name__ == "__main__":
     test_x = test.drop(["suspicion_number"], axis=1)
     train_y = train[["suspicion_number"]]
     test_y = test[["suspicion_number"]]
-    print(features)
-    print(train_x)
 
     alpha = float(args.alpha or 1.0)
     l1_ratio = float(args.l1_ratio or 2.0)

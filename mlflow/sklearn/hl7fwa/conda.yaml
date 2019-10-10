@@ -1,4 +1,4 @@
-name: hl7fwa-rf4
+name: hl7fwa-model
 channels:
   - defaults
 dependencies:

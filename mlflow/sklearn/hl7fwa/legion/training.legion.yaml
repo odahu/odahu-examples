@@ -1,5 +1,5 @@
 kind: ModelTraining
-id: hl7fwa
+id: hl7fwa-model
 spec:
   model:
     name: hl7fwa
