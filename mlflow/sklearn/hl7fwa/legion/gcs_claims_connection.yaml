@@ -2,7 +2,7 @@ kind: Connection
 id: hl7fwa-claims-prepared
 spec:
   type: gcs
-  uri: gs://epmc-bdcc-mvplatform-demo-prepared/test/result_claims/
+  uri: gs://epmc-bdcc-mvplatform-demo-prepared/test/result_claims
   region: us-east1
   keySecret: |
     *** secret ***
