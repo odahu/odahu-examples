@@ -42,8 +42,8 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
-    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet")
-    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet")
+    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet/")
+    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet/")
     #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
     #    df = pd.read_csv(wine_path)
 
