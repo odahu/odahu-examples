@@ -1,4 +1,4 @@
-id: hl7fwa-model
+id: hl7fwa-model-test
 kind: ModelPackaging
 spec:
   artifactName: "<fill in training model archive (ends with .zip), e.g. hl7fwa-<training-id>-1.0-ccf5ff72-a443-4ae9-8bce-a02a294223a7.zip>"

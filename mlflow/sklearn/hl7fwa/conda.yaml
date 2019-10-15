@@ -1,4 +1,4 @@
-name: hl7fwa-model
+name: hl7fwa-model-test
 channels:
   - defaults
 dependencies:
