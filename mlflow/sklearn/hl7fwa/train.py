@@ -8,6 +8,7 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
+from pathlib import Path
 
 
 def eval_metrics(actual, pred):
@@ -16,20 +17,11 @@ def eval_metrics(actual, pred):
     r2 = r2_score(actual, pred)
     return rmse, mae, r2
 
-def is_suspicious():
-    """For now we just compare against the hard-coded feeder value"""
-    # TODO calculate off of something like distance from mean(per drug) by stddev
-    return merged['amount'] > 42
-
 
 if __name__ == "__main__":
-    warnings.filterwarnings("ignore")
-    np.random.seed(40)
+    #  pd.set_option('display.max_columns', 500)
 
-    num_estimators = 2
-    random_state = 0
-    pickle_size = 8192
-    test_pct = .75
+    warnings.filterwarnings("ignore")
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--alpha')
@@ -42,49 +34,38 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
-    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet")
-    claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet")
-    #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
-    #    df = pd.read_csv(wine_path)
+    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "result")
+    data_dir = Path(hl7_path)
+    full_df = pd.concat(
+        pd.read_parquet(parquet_file)
+        for parquet_file in data_dir.glob('*.parquet')
+    )
 
-    hl7_df = pd.read_parquet(path=hl7_path, engine='pyarrow')
-    claims_df = pd.read_parquet(path=claims_path, engine='pyarrow')
+    full_df["PotentialFraud"] = full_df['PotentialFraud'].apply(lambda x: 0 if x == 'No' else 1)
 
-    # DATA PROCESSING
+    X = full_df.drop(axis=1, columns=['Provider', 'PotentialFraud'])
+    y = full_df['PotentialFraud']
 
-    merged = pd.merge(hl7_df, claims_df, on='patientId', how='inner') \
-        .drop(['id'], axis=1)
-    merged['amount'] = merged['price'].astype(int)
-    # the is_suspicious column is what we will be predicting
-    merged['is_suspicious'] = is_suspicious()
-    df = merged.drop(['price'], axis=1)
-    df['is_train'] = np.random.uniform(0, 1, len(df)) <= test_pct
-    factorizedDrugs = pd.factorize(df['drug'])[0]
-    factorizedSuspicions = pd.factorize(df['is_suspicious'])[0]
-    df.insert(loc=len(df.columns), column='drugId', value=factorizedDrugs)
-    df.insert(loc=len(df.columns), column='suspicion_number', value=factorizedSuspicions)
-    df['patientId'] = df['patientId'].astype(int)
+    print(full_df.head(4))
 
-    train, test = df[df['is_train']], df[df['is_train'] == False]
-    df = df.drop(['drug', 'is_suspicious', 'is_train'], axis=1)
-    labels = df.copy().pop('suspicion_number')
-    train, test = train_test_split(df)
+    train, test = train_test_split(full_df)
 
+    train_x = train.drop(['Provider', 'PotentialFraud'], axis=1)
+    test_x = test.drop(['Provider', 'PotentialFraud'], axis=1)
+    train_y = train[["PotentialFraud"]]
+    test_y = test[["PotentialFraud"]]
 
-    features = df.columns[0:3]
-
-    train_x = train.drop(["suspicion_number"], axis=1)
-    test_x = test.drop(["suspicion_number"], axis=1)
-    train_y = train[["suspicion_number"]]
-    test_y = test[["suspicion_number"]]
-
+    train_x = train_x.fillna(0)
+    test_x = test_x.fillna(0)
+    train_y = train_y.fillna(0)
+    test_y = test_y.fillna(0)
     alpha = float(args.alpha or 1.0)
     l1_ratio = float(args.l1_ratio or 2.0)
 
     with mlflow.start_run():
-        classifier = RandomForestClassifier(n_jobs=num_estimators,
-                                        random_state=random_state)
-        classifier.fit(train_x, pd.factorize(train['suspicion_number'])[0])
+        classifier = RandomForestClassifier(n_estimators=500, class_weight='balanced', random_state=123,
+                                            max_depth=4)  # We will set max_depth =4
+        classifier.fit(train_x, train_y)
 
         predicted_qualities = classifier.predict(test_x)
 
