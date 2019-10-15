@@ -34,6 +34,20 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
+    hl7_path = os.path.dirname(os.path.relpath('__file__'))
+    print("path no result")
+    print(hl7_path)
+    my_list = os.listdir(hl7_path)
+    print("list of folders")
+    print(my_list)
+
+    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "result")
+    print("path of the result")
+    print(hl7_path)
+    my_list = os.listdir(hl7_path)
+    print("list of folders")
+    print(my_list)
+
     hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "result")
     data_dir = Path(hl7_path)
     full_df = pd.concat(
