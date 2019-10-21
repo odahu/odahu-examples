@@ -34,19 +34,6 @@ if __name__ == "__main__":
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
-    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "/")
-    print("path no result")
-    print(hl7_path)
-    my_list = os.listdir(hl7_path)
-    print("list of folders")
-    print(my_list)
-
-    hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "result")
-    print("path of the result")
-    print(hl7_path)
-    my_list = os.listdir(hl7_path)
-    print("list of folders")
-    print(my_list)
 
     hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "result")
     data_dir = Path(hl7_path)
@@ -55,19 +42,26 @@ if __name__ == "__main__":
         for parquet_file in data_dir.glob('*.parquet')
     )
 
-    full_df["PotentialFraud"] = full_df['PotentialFraud'].apply(lambda x: 0 if x == 'No' else 1)
 
-    X = full_df.drop(axis=1, columns=['Provider', 'PotentialFraud'])
-    y = full_df['PotentialFraud']
+    full_df['drug'] = pd.factorize(full_df['drug'])[0]
+    full_df['medicalFacility'] = pd.factorize(full_df['medicalFacility'])[0]
+    full_df['serviceArea'] = pd.factorize(full_df['serviceArea'])[0]
+    full_df['price'] = pd.to_numeric(full_df['price'], errors='coerce')
 
-    print(full_df.head(4))
+    full_df['state'] = pd.factorize(full_df['state'])[0]
+
+
+    pd.set_option('display.max_columns', 500)
+
+    X = full_df.drop(axis=1, columns=['fraud'])
+    y = full_df['fraud']
 
     train, test = train_test_split(full_df)
 
-    train_x = train.drop(['Provider', 'PotentialFraud'], axis=1)
-    test_x = test.drop(['Provider', 'PotentialFraud'], axis=1)
-    train_y = train[["PotentialFraud"]]
-    test_y = test[["PotentialFraud"]]
+    train_x = train.drop(['fraud'], axis=1)
+    test_x = test.drop(['fraud'], axis=1)
+    train_y = train[['fraud']]
+    test_y = test[['fraud']]
 
     train_x = train_x.fillna(0)
     test_x = test_x.fillna(0)
