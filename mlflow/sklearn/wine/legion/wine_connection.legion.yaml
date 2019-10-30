@@ -2,7 +2,7 @@ kind: Connection
 id: wine
 spec:
   type: gcs
-  uri: gs://gke-legion-vitalik-data-store/data/wine-quality.csv
-  region: us-east1
-  keySecret: |
-    *** secret ***
+  uri: gs://<paste your bucket address here>/data/wine-quality.csv
+  region: <past region here>
+  keySecret: <paste key secret here>
+  description: Wine dataset
