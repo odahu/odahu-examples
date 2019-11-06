@@ -7,13 +7,14 @@ spec:
   toolchain: mlflow
   entrypoint: main
   workDir: mlflow/sklearn/hl7fwa
+  reference: origin/mvplatform-demo
   data:
     - connName: hl7fwaclaimsprepared
       localPath: mlflow/sklearn/hl7fwa/claims.snappy.parquet
     - connName: hl7fwakafkaparquetfile
       localPath: mlflow/sklearn/hl7fwa/test.snappy.parquet
   hyperParameters:
-    alpha: "1.0"
+    num_estimators: "10"
   resources:
     limits:
       cpu: 2024m
@@ -22,4 +23,3 @@ spec:
       cpu: 1024m
       memory: 1024Mi
   vcsName: legion-examples
-  

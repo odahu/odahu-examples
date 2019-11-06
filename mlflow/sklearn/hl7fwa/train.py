@@ -27,25 +27,24 @@ if __name__ == "__main__":
     np.random.seed(40)
 
     num_estimators = 2
-    random_state = 0
+    random_state = 1
     pickle_size = 8192
     test_pct = .75
+    max_depth=15
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--alpha')
-    parser.add_argument('--l1-ratio')
+    parser.add_argument('--num_estimators')
+    parser.add_argument('--max_depth')
 
     try:
         args = parser.parse_args()
     except:
-        args = argparse.Namespace(alpha=0.1, l1_ratio=0.5)
+        args = argparse.Namespace(num_estimators=2, max_depth=15)
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
 
     hl7_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "test.snappy.parquet")
     claims_path = os.path.join(os.path.dirname(os.path.relpath('__file__')), "claims.snappy.parquet")
-    #    wine_path = os.path.join(os.path.dirname(os.path.relpath('__file__')),"testfile.snappy.parquet")
-    #    df = pd.read_csv(wine_path)
 
     hl7_df = pd.read_parquet(path=hl7_path, engine='pyarrow')
     claims_df = pd.read_parquet(path=claims_path, engine='pyarrow')
@@ -82,21 +81,21 @@ if __name__ == "__main__":
     l1_ratio = float(args.l1_ratio or 2.0)
 
     with mlflow.start_run():
-        classifier = RandomForestClassifier(n_jobs=num_estimators,
-                                        random_state=random_state)
+        classifier = RandomForestClassifier(n_estimators=num_estimators, n_jobs=num_estimators,
+                                            max_depth=max_depth, random_state=random_state)
         classifier.fit(train_x, pd.factorize(train['suspicion_number'])[0])
 
         predicted_qualities = classifier.predict(test_x)
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
 
-        print(f"Elasticnet model (alpha={alpha}, l1_ratio={l1_ratio}):")
+        print(f"Elasticnet model (num_estimators={num_estimators}, max_depth={max_depth}):")
         print(f"  RMSE: {rmse}")
         print(f"  MAE: {mae}")
         print(f"  R2: {r2}")
 
-        mlflow.log_param("alpha", alpha)
-        mlflow.log_param("l1_ratio", l1_ratio)
+        mlflow.log_param("num_estimators", num_estimators)
+        mlflow.log_param("max_depth", max_depth)
         mlflow.log_metric("rmse", rmse)
         mlflow.log_metric("r2", r2)
         mlflow.log_metric("mae", mae)
