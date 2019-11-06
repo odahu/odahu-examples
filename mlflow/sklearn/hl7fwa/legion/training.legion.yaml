@@ -3,7 +3,7 @@ id: hl7fwa-model
 spec:
   model:
     name: hl7fwa
-    version: 1.0
+    version: 1.1
   toolchain: mlflow
   entrypoint: main
   workDir: mlflow/sklearn/hl7fwa

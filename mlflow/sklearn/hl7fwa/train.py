@@ -77,9 +77,6 @@ if __name__ == "__main__":
     train_y = train[["suspicion_number"]]
     test_y = test[["suspicion_number"]]
 
-    alpha = float(args.alpha or 1.0)
-    l1_ratio = float(args.l1_ratio or 2.0)
-
     with mlflow.start_run():
         classifier = RandomForestClassifier(n_estimators=num_estimators, n_jobs=num_estimators,
                                             max_depth=max_depth, random_state=random_state)
