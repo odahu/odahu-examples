@@ -1,5 +1,5 @@
 id: hl7fwa-model
 kind: ModelDeployment
 spec:
-  image: "gcr.io/or2-msq-epmc-bdcc-t1iylu/demo/hl7fwa-model:1.1"
+  image: "<fill in with packaging output (container uri): e.g. gcr.io/<GCP project id>/demo/hl7fwa-rf5:1.0>"
   minReplicas: 1
