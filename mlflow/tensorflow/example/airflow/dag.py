@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from airflow import DAG
-from legion.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
+from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
     ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec
 
-from legion.airflow.deployment import DeploymentOperator, DeploymentSensor
-from legion.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
-from legion.airflow.packaging import PackagingOperator, PackagingSensor
-from legion.airflow.training import TrainingOperator, TrainingSensor
+from odahuflow.airflow.deployment import DeploymentOperator, DeploymentSensor
+from odahuflow.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
+from odahuflow.airflow.packaging import PackagingOperator, PackagingSensor
+from odahuflow.airflow.training import TrainingOperator, TrainingSensor
 
 default_args = {
     'owner': 'airflow',
@@ -18,8 +18,8 @@ default_args = {
     'end_date': datetime(2099, 12, 31)
 }
 
-edi_connection_id = "legion_edi"
-model_connection_id = "legion_model"
+edi_connection_id = "odahuflow_edi"
+model_connection_id = "odahuflow_model"
 
 training_id = "airlfow-tensorflow"
 training = ModelTraining(
@@ -42,7 +42,7 @@ training = ModelTraining(
                 memory="2024Mi"
             )
         ),
-        vcs_name="legion-examples"
+        vcs_name="odahuflow-examples"
     ),
 )
 
