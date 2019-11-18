@@ -4,15 +4,15 @@ from airflow import DAG
 from airflow.contrib.operators.gcs_to_gcs import GoogleCloudStorageToGoogleCloudStorageOperator
 from airflow.models import Variable
 from airflow.operators.bash_operator import BashOperator
-from legion.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
+from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
     ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec, Connection, ConnectionSpec, \
     DataBindingDir
 
-from legion.airflow.connection import GcpConnectionToLegionConnectionOperator
-from legion.airflow.deployment import DeploymentOperator, DeploymentSensor
-from legion.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
-from legion.airflow.packaging import PackagingOperator, PackagingSensor
-from legion.airflow.training import TrainingOperator, TrainingSensor
+from odahuflow.airflow.connection import GcpConnectionToLegionConnectionOperator
+from odahuflow.airflow.deployment import DeploymentOperator, DeploymentSensor
+from odahuflow.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
+from odahuflow.airflow.packaging import PackagingOperator, PackagingSensor
+from odahuflow.airflow.training import TrainingOperator, TrainingSensor
 
 default_args = {
     'owner': 'airflow',
@@ -23,8 +23,8 @@ default_args = {
     'end_date': datetime(2099, 12, 31)
 }
 
-edi_connection_id = "legion_edi"
-model_connection_id = "legion_model"
+edi_connection_id = "odahuflow_edi"
+model_connection_id = "odahuflow_model"
 
 gcp_project = Variable.get("GCP_PROJECT")
 wine_bucket = Variable.get("WINE_BUCKET")
@@ -69,7 +69,7 @@ training = ModelTraining(
                 memory="2024Mi"
             )
         ),
-        vcs_name="legion-examples"
+        vcs_name="odahuflow-examples"
     ),
 )
 
@@ -119,8 +119,8 @@ with dag:
         bash_command='echo "imagine that we transform a data"',
         default_args=default_args
     )
-    legion_conn = GcpConnectionToLegionConnectionOperator(
-        task_id='legion_connection_creation',
+    odahuflow_conn = GcpConnectionToLegionConnectionOperator(
+        task_id='odahuflow_connection_creation',
         google_cloud_storage_conn_id='wine_input',
         edi_connection_id=edi_connection_id,
         conn_template=wine,
@@ -188,7 +188,7 @@ with dag:
         default_args=default_args
     )
 
-    data_extraction >> data_transformation >> legion_conn >> train
+    data_extraction >> data_transformation >> odahuflow_conn >> train
     train >> wait_for_train >> pack >> wait_for_pack >> dep >> wait_for_dep
     wait_for_dep >> model_info_request
     wait_for_dep >> model_predict_request
