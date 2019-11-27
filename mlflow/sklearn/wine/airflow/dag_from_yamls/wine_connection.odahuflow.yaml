@@ -1,0 +1,7 @@
+kind: Connection
+id: wine
+spec:
+  type: gcs
+  uri: gs://{wine_bucket}/data/wine-quality.csv
+  region: {gcp_project}
+  description: Wine dataset
