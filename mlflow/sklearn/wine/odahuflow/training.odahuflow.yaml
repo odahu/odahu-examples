@@ -19,5 +19,5 @@ spec:
     requests:
       cpu: 2024m
       memory: 2024Mi
-  vcsName: odahuflow-examples
+  vcsName: odahu-flow-examples
 

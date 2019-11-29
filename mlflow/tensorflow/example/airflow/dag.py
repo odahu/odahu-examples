@@ -42,7 +42,7 @@ training = ModelTraining(
                 memory="2024Mi"
             )
         ),
-        vcs_name="odahuflow-examples"
+        vcs_name="odahu-flow-examples"
     ),
 )
 
