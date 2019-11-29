@@ -4,15 +4,15 @@ from airflow import DAG
 from airflow.contrib.operators.gcs_to_gcs import GoogleCloudStorageToGoogleCloudStorageOperator
 from airflow.models import Variable
 from airflow.operators.bash_operator import BashOperator
-from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
+from legion.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
     ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec, Connection, ConnectionSpec, \
     DataBindingDir
 
-from odahuflow.airflow.connection import GcpConnectionToLegionConnectionOperator
-from odahuflow.airflow.deployment import DeploymentOperator, DeploymentSensor
-from odahuflow.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
-from odahuflow.airflow.packaging import PackagingOperator, PackagingSensor
-from odahuflow.airflow.training import TrainingOperator, TrainingSensor
+from legion.airflow.connection import GcpConnectionToLegionConnectionOperator
+from legion.airflow.deployment import DeploymentOperator, DeploymentSensor
+from legion.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
+from legion.airflow.packaging import PackagingOperator, PackagingSensor
+from legion.airflow.training import TrainingOperator, TrainingSensor
 
 default_args = {
     'owner': 'airflow',
@@ -23,13 +23,13 @@ default_args = {
     'end_date': datetime(2099, 12, 31)
 }
 
-edi_connection_id = "odahuflow_edi"
-model_connection_id = "odahuflow_model"
+edi_connection_id = "legion_edi"
+model_connection_id = "legion_model"
 
 gcp_project = Variable.get("GCP_PROJECT")
 wine_bucket = Variable.get("WINE_BUCKET")
 
-wine_conn_id = "wine"
+wine_conn_id = "airflow-wine"
 wine = Connection(
     id=wine_conn_id,
     spec=ConnectionSpec(
@@ -55,7 +55,7 @@ training = ModelTraining(
         },
         data=[
             DataBindingDir(
-                conn_name='wine',
+                conn_name=wine_conn_id,
                 local_path='mlflow/sklearn/wine/wine-quality.csv'
             ),
         ],
@@ -69,7 +69,7 @@ training = ModelTraining(
                 memory="2024Mi"
             )
         ),
-        vcs_name="odahuflow-examples"
+        vcs_name="odahu-flow-examples"
     ),
 )
 
