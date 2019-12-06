@@ -8,11 +8,11 @@ from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity
     ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec, Connection, ConnectionSpec, \
     DataBindingDir
 
-from odahuflow.airflow.connection import GcpConnectionToOdahuConnectionOperator
-from odahuflow.airflow.deployment import DeploymentOperator, DeploymentSensor
-from odahuflow.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
-from odahuflow.airflow.packaging import PackagingOperator, PackagingSensor
-from odahuflow.airflow.training import TrainingOperator, TrainingSensor
+from odahuflow.airflow_plugin.connection import GcpConnectionToOdahuConnectionOperator
+from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
+from odahuflow.airflow_plugin.model import ModelPredictRequestOperator, ModelInfoRequestOperator
+from odahuflow.airflow_plugin.packaging import PackagingOperator, PackagingSensor
+from odahuflow.airflow_plugin.training import TrainingOperator, TrainingSensor
 
 default_args = {
     'owner': 'airflow',
@@ -23,7 +23,7 @@ default_args = {
     'end_date': datetime(2099, 12, 31)
 }
 
-edi_connection_id = "odahuflow_edi"
+api_connection_id = "odahuflow_api"
 model_connection_id = "odahuflow_model"
 
 gcp_project = Variable.get("GCP_PROJECT")
@@ -122,14 +122,14 @@ with dag:
     odahuflow_conn = GcpConnectionToOdahuConnectionOperator(
         task_id='odahuflow_connection_creation',
         google_cloud_storage_conn_id='wine_input',
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         conn_template=wine,
         default_args=default_args
     )
 
     train = TrainingOperator(
         task_id="training",
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         training=training,
         default_args=default_args
     )
@@ -137,13 +137,13 @@ with dag:
     wait_for_train = TrainingSensor(
         task_id='wait_for_training',
         training_id=training_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         default_args=default_args
     )
 
     pack = PackagingOperator(
         task_id="packaging",
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         packaging=packaging,
         trained_task_id="wait_for_training",
         default_args=default_args
@@ -152,13 +152,13 @@ with dag:
     wait_for_pack = PackagingSensor(
         task_id='wait_for_packaging',
         packaging_id=packaging_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         default_args=default_args
     )
 
     dep = DeploymentOperator(
         task_id="deployment",
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         deployment=deployment,
         packaging_task_id="wait_for_packaging",
         default_args=default_args
@@ -167,14 +167,14 @@ with dag:
     wait_for_dep = DeploymentSensor(
         task_id='wait_for_deployment',
         deployment_id=deployment_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         default_args=default_args
     )
 
     model_predict_request = ModelPredictRequestOperator(
         task_id="model_predict_request",
         model_deployment_name=deployment_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         model_connection_id=model_connection_id,
         request_body=model_example_request,
         default_args=default_args
@@ -183,7 +183,7 @@ with dag:
     model_info_request = ModelInfoRequestOperator(
         task_id='model_info_request',
         model_deployment_name=deployment_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         model_connection_id=model_connection_id,
         default_args=default_args
     )

@@ -4,12 +4,12 @@ from airflow import DAG
 from airflow.contrib.operators.gcs_to_gcs import GoogleCloudStorageToGoogleCloudStorageOperator
 from airflow.models import Variable
 from airflow.operators.bash_operator import BashOperator
-from odahuflow.airflow.connection import GcpConnectionToOdahuConnectionOperator
-from odahuflow.airflow.deployment import DeploymentOperator, DeploymentSensor
-from odahuflow.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
-from odahuflow.airflow.packaging import PackagingOperator, PackagingSensor
-from odahuflow.airflow.resources import resource
-from odahuflow.airflow.training import TrainingOperator, TrainingSensor
+from odahuflow.airflow_plugin.connection import GcpConnectionToOdahuConnectionOperator
+from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
+from odahuflow.airflow_plugin.model import ModelPredictRequestOperator, ModelInfoRequestOperator
+from odahuflow.airflow_plugin.packaging import PackagingOperator, PackagingSensor
+from odahuflow.airflow_plugin.resources import resource
+from odahuflow.airflow_plugin.training import TrainingOperator, TrainingSensor
 
 default_args = {
     'owner': 'airflow',

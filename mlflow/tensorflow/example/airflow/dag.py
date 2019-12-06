@@ -1,13 +1,13 @@
 from datetime import datetime
 
 from airflow import DAG
-from legion.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
+from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
     ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec
 
-from legion.airflow.deployment import DeploymentOperator, DeploymentSensor
-from legion.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
-from legion.airflow.packaging import PackagingOperator, PackagingSensor
-from legion.airflow.training import TrainingOperator, TrainingSensor
+from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
+from odahuflow.airflow_plugin.model import ModelPredictRequestOperator, ModelInfoRequestOperator
+from odahuflow.airflow_plugin.packaging import PackagingOperator, PackagingSensor
+from odahuflow.airflow_plugin.training import TrainingOperator, TrainingSensor
 
 default_args = {
     'owner': 'airflow',
@@ -18,8 +18,8 @@ default_args = {
     'end_date': datetime(2099, 12, 31)
 }
 
-edi_connection_id = "legion_edi"
-model_connection_id = "legion_model"
+api_connection_id = "odahuflow_api"
+model_connection_id = "odahuflow_model"
 
 training_id = "airlfow-tensorflow"
 training = ModelTraining(
@@ -80,7 +80,7 @@ dag = DAG(
 with dag:
     train = TrainingOperator(
         task_id="training",
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         training=training,
         default_args=default_args
     )
@@ -88,13 +88,13 @@ with dag:
     wait_for_train = TrainingSensor(
         task_id='wait_for_training',
         training_id=training_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         default_args=default_args
     )
 
     pack = PackagingOperator(
         task_id="packaging",
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         packaging=packaging,
         trained_task_id="wait_for_training",
         default_args=default_args
@@ -103,13 +103,13 @@ with dag:
     wait_for_pack = PackagingSensor(
         task_id='wait_for_packaging',
         packaging_id=packaging_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         default_args=default_args
     )
 
     dep = DeploymentOperator(
         task_id="deployment",
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         deployment=deployment,
         packaging_task_id="wait_for_packaging",
         default_args=default_args
@@ -118,14 +118,14 @@ with dag:
     wait_for_dep = DeploymentSensor(
         task_id='wait_for_deployment',
         deployment_id=deployment_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         default_args=default_args
     )
 
     model_predict_request = ModelPredictRequestOperator(
         task_id="model_predict_request",
         model_deployment_name=deployment_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         model_connection_id=model_connection_id,
         request_body=model_example_request,
         default_args=default_args
@@ -134,7 +134,7 @@ with dag:
     model_info_request = ModelInfoRequestOperator(
         task_id='model_info_request',
         model_deployment_name=deployment_id,
-        edi_connection_id=edi_connection_id,
+        api_connection_id=api_connection_id,
         model_connection_id=model_connection_id,
         default_args=default_args
     )
