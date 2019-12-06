@@ -4,7 +4,7 @@ from airflow import DAG
 from airflow.contrib.operators.gcs_to_gcs import GoogleCloudStorageToGoogleCloudStorageOperator
 from airflow.models import Variable
 from airflow.operators.bash_operator import BashOperator
-from odahuflow.airflow.connection import GcpConnectionToLegionConnectionOperator
+from odahuflow.airflow.connection import GcpConnectionToOdahuConnectionOperator
 from odahuflow.airflow.deployment import DeploymentOperator, DeploymentSensor
 from odahuflow.airflow.model import ModelPredictRequestOperator, ModelInfoRequestOperator
 from odahuflow.airflow.packaging import PackagingOperator, PackagingSensor
@@ -81,7 +81,7 @@ with dag:
         bash_command='echo "imagine that we transform a data"',
         default_args=default_args
     )
-    odahuflow_conn = GcpConnectionToLegionConnectionOperator(
+    odahuflow_conn = GcpConnectionToOdahuConnectionOperator(
         task_id='odahuflow_connection_creation',
         google_cloud_storage_conn_id='wine_input',
         api_connection_id=api_connection_id,
