@@ -4,14 +4,11 @@ from airflow import DAG
 from airflow.contrib.operators.gcs_to_gcs import GoogleCloudStorageToGoogleCloudStorageOperator
 from airflow.models import Variable
 from airflow.operators.bash_operator import BashOperator
-from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
-    ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec, Connection, ConnectionSpec, \
-    DataBindingDir
-
 from odahuflow.airflow_plugin.connection import GcpConnectionToOdahuConnectionOperator
 from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
 from odahuflow.airflow_plugin.model import ModelPredictRequestOperator, ModelInfoRequestOperator
 from odahuflow.airflow_plugin.packaging import PackagingOperator, PackagingSensor
+from odahuflow.airflow_plugin.resources import resource
 from odahuflow.airflow_plugin.training import TrainingOperator, TrainingSensor
 
 default_args = {
@@ -29,66 +26,31 @@ model_connection_id = "odahuflow_model"
 gcp_project = Variable.get("GCP_PROJECT")
 wine_bucket = Variable.get("WINE_BUCKET")
 
-wine_conn_id = "wine"
-wine = Connection(
-    id=wine_conn_id,
-    spec=ConnectionSpec(
-        type="gcs",
-        uri=f'gs://{wine_bucket}/data/wine-quality.csv',
-        region=gcp_project,
-    )
-)
 
-training_id = "airlfow-wine"
-training = ModelTraining(
-    id=training_id,
-    spec=ModelTrainingSpec(
-        model=ModelIdentity(
-            name="wine",
-            version="1.0"
-        ),
-        toolchain="mlflow",
-        entrypoint="main",
-        work_dir="mlflow/sklearn/wine",
-        hyper_parameters={
-            "alpha": "1.0"
-        },
-        data=[
-            DataBindingDir(
-                conn_name='wine',
-                local_path='mlflow/sklearn/wine/wine-quality.csv'
-            ),
-        ],
-        resources=ResourceRequirements(
-            requests=ResourceList(
-                cpu="2024m",
-                memory="2024Mi"
-            ),
-            limits=ResourceList(
-                cpu="2024m",
-                memory="2024Mi"
-            )
-        ),
-        vcs_name="odahuflow-examples"
-    ),
-)
+wine_conn_id, wine = resource('wine_connection.odahuflow.yaml', wine_bucket=wine_bucket, gcp_project=gcp_project)
 
-packaging_id = "airlfow-wine"
-packaging = ModelPackaging(
-    id=packaging_id,
-    spec=ModelPackagingSpec(
-        targets=[Target(name="docker-push", connection_name="docker-ci")],
-        integration_name="docker-rest"
-    ),
-)
+training_id, training = resource('training.odahuflow.yaml')
 
-deployment_id = "airlfow-wine"
-deployment = ModelDeployment(
-    id=deployment_id,
-    spec=ModelDeploymentSpec(
-        min_replicas=1,
-    ),
-)
+packaging_id, packaging = resource("""
+id: airlfow-wine
+kind: ModelPackaging
+spec:
+  artifactName: "<fill-in>"
+  targets:
+    - connectionName: docker-ci
+      name: docker-push
+  integrationName: docker-rest
+""")
+
+deployment_id, deployment = resource("""
+id: airflow-wine
+kind: ModelDeployment
+spec:
+  image: "<fill-in>"
+  minReplicas: 1
+  ImagePullConnectionID: docker-ci
+""")
+
 
 model_example_request = {
     "columns": ["alcohol", "chlorides", "citric acid", "density", "fixed acidity", "free sulfur dioxide", "pH",
@@ -98,7 +60,7 @@ model_example_request = {
 }
 
 dag = DAG(
-    'wine_model',
+    'wine_model_yamls',
     default_args=default_args,
     schedule_interval=None
 )
