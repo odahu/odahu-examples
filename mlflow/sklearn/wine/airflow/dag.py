@@ -69,7 +69,7 @@ training = ModelTraining(
                 memory="2024Mi"
             )
         ),
-        vcs_name="odahuflow-examples"
+        vcs_name="odahu-flow-examples"
     ),
 )
 
@@ -98,7 +98,7 @@ model_example_request = {
 }
 
 dag = DAG(
-    'wine_model',
+    'airlfow-wine',
     default_args=default_args,
     schedule_interval=None
 )
