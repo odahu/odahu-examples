@@ -1,5 +1,5 @@
 kind: ModelTraining
-id: airflow-wine
+id: airflow-wine-from-yamls
 spec:
   model:
     name: wine
@@ -8,7 +8,7 @@ spec:
   entrypoint: main
   workDir: mlflow/sklearn/wine
   data:
-    - connName: wine
+    - connName: {conn_name}
       localPath: mlflow/sklearn/wine/wine-quality.csv
   hyperParameters:
     alpha: "1.0"
