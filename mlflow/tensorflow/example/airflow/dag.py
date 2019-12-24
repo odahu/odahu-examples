@@ -72,7 +72,7 @@ model_example_request = {
 }
 
 dag = DAG(
-    'tensorflow_example_model',
+    'airlfow-tensorflow',
     default_args=default_args,
     schedule_interval=None
 )

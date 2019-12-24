@@ -27,12 +27,17 @@ gcp_project = Variable.get("GCP_PROJECT")
 wine_bucket = Variable.get("WINE_BUCKET")
 
 
-wine_conn_id, wine = resource('wine_connection.odahuflow.yaml', wine_bucket=wine_bucket, gcp_project=gcp_project)
+wine_conn_id, wine = resource(
+    'wine_connection.odahuflow.yaml',
+    wine_bucket=wine_bucket, gcp_project=gcp_project,
+)
 
-training_id, training = resource('training.odahuflow.yaml')
+training_id, training = resource(
+    'wine_training.odahuflow.yaml', conn_name=wine_conn_id,
+)
 
 packaging_id, packaging = resource("""
-id: airlfow-wine
+id: airflow-wine-from-yamls
 kind: ModelPackaging
 spec:
   artifactName: "<fill-in>"
@@ -43,7 +48,7 @@ spec:
 """)
 
 deployment_id, deployment = resource("""
-id: airflow-wine
+id: airflow-wine-from-yamls
 kind: ModelDeployment
 spec:
   image: "<fill-in>"
@@ -60,7 +65,7 @@ model_example_request = {
 }
 
 dag = DAG(
-    'wine_model_yamls',
+    'airflow-wine-from-yamls',
     default_args=default_args,
     schedule_interval=None
 )
