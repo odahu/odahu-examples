@@ -21,7 +21,7 @@ default_args = {
 api_connection_id = "odahuflow_api"
 model_connection_id = "odahuflow_model"
 
-training_id = "airlfow-tensorflow"
+training_id = "airflow-tensorflow"
 training = ModelTraining(
     id=training_id,
     spec=ModelTrainingSpec(
@@ -46,7 +46,7 @@ training = ModelTraining(
     ),
 )
 
-packaging_id = "airlfow-tensorflow"
+packaging_id = "airflow-tensorflow"
 packaging = ModelPackaging(
     id=packaging_id,
     spec=ModelPackagingSpec(
@@ -55,7 +55,7 @@ packaging = ModelPackaging(
     ),
 )
 
-deployment_id = "airlfow-tensorflow"
+deployment_id = "airflow-tensorflow"
 deployment = ModelDeployment(
     id=deployment_id,
     spec=ModelDeploymentSpec(
@@ -72,7 +72,7 @@ model_example_request = {
 }
 
 dag = DAG(
-    'airlfow-tensorflow',
+    'airflow-tensorflow',
     default_args=default_args,
     schedule_interval=None
 )
