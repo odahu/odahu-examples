@@ -39,7 +39,7 @@ wine = Connection(
     )
 )
 
-training_id = "airlfow-wine"
+training_id = "airflow-wine"
 training = ModelTraining(
     id=training_id,
     spec=ModelTrainingSpec(
@@ -73,7 +73,7 @@ training = ModelTraining(
     ),
 )
 
-packaging_id = "airlfow-wine"
+packaging_id = "airflow-wine"
 packaging = ModelPackaging(
     id=packaging_id,
     spec=ModelPackagingSpec(
@@ -82,7 +82,7 @@ packaging = ModelPackaging(
     ),
 )
 
-deployment_id = "airlfow-wine"
+deployment_id = "airflow-wine"
 deployment = ModelDeployment(
     id=deployment_id,
     spec=ModelDeploymentSpec(
@@ -98,7 +98,7 @@ model_example_request = {
 }
 
 dag = DAG(
-    'airlfow-wine',
+    'airflow-wine',
     default_args=default_args,
     schedule_interval=None
 )
