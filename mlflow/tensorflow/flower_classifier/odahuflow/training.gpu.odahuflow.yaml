@@ -2,17 +2,18 @@ kind: ModelTraining
 id: flower-classifier
 spec:
   model:
-    name: flower_classifier
-    version: 3.0
+    name: flower-classifier
+    version: 2.0
   toolchain: mlflow
   entrypoint: main
   workDir: mlflow/tensorflow/flower_classifier
   resources:
     limits:
-      cpu: 4024m
-      memory: 4024Mi
+      gpu: 2
+      cpu: 4
+      memory: 16Gi
     requests:
-      cpu: 4024m
-      memory: 4024Mi
+      gpu: 2
+      cpu: 4
+      memory: 16Gi
   vcsName: odahu-flow-examples
-  
