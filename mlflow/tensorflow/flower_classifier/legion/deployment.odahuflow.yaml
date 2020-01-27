@@ -1,5 +1,0 @@
-id: flower-classifier
-kind: ModelDeployment
-spec:
-  image: "<fill-in>"
-  minReplicas: 1
