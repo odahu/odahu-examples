@@ -1,0 +1,6 @@
+id: reuters-classifier
+kind: ModelDeployment
+spec:
+  image: "<fill-in>"
+  minReplicas: 1
+  ImagePullConnectionID: docker-ci
