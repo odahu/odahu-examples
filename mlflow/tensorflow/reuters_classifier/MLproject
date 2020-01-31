@@ -1,0 +1,10 @@
+name: reuters-demo
+
+conda_env: conda.yaml
+
+entry_points:
+  main:
+    parameters:
+      maxwords: {type: int, default: 1000}
+      units: {type: int, default: 512}
+    command: "python train.py --maxwords={maxwords} --units={units}"

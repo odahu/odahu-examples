@@ -1,0 +1,12 @@
+kind: Connection
+# Some unique value
+id: reuters-classifier-repo
+spec:
+  # If you wanna get access to a git repository. You must specify git as a type
+  type: git
+  # A git url. Currently supported only the ssh option
+  uri: git@github.com:odahu/odahu-examples.git
+  # Ssh private key which converted in base64 format. For example: base64 -w 0 ~/.ssh/id_rsa
+  keySecret: <put ssh here>
+  # A git branch, commit or tag
+  reference: origin/feat/10-reuters
