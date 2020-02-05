@@ -2,13 +2,13 @@ id: flower-classifier
 kind: ModelDeployment
 spec:
   image: "<fill-in>"
-  livenessProbeInitialDelay: 60
-  readinessProbeInitialDelay: 60
+  livenessProbeInitialDelay: 90
+  readinessProbeInitialDelay: 90
   minReplicas: 1
   resources:
     limits:
       cpu: 2
-      memory: 4Gi
+      memory: 5Gi
     requests:
-      cpu: 2
+      cpu: 1
       memory: 4Gi

@@ -1,5 +1,5 @@
 kind: ModelTraining
-id: reuters-classifier-id
+id: reuters-classifier
 spec:
   model:
     name: reuters-classifier
@@ -20,4 +20,4 @@ spec:
     requests:
       cpu: 4
       memory: 2Gi
-  vcsName: reuters-classifier-repo
+  vcsName: odahu-flow-examples
