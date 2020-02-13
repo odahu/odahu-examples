@@ -15,9 +15,9 @@ spec:
       remotePath: /reuters/
   resources:
     limits:
-      cpu: 4
+      cpu: 3
       memory: 2Gi
     requests:
-      cpu: 4
+      cpu: 3
       memory: 2Gi
   vcsName: odahu-flow-examples
