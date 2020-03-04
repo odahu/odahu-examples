@@ -2,8 +2,4 @@ id: wine
 kind: ModelPackaging
 spec:
   artifactName: "<fill-in>"
-  targets:
-    - connectionName: docker-ci
-      name: docker-push
   integrationName: docker-rest
-

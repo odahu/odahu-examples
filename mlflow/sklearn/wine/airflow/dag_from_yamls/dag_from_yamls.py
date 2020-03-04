@@ -41,9 +41,6 @@ id: airflow-wine-from-yamls
 kind: ModelPackaging
 spec:
   artifactName: "<fill-in>"
-  targets:
-    - connectionName: docker-ci
-      name: docker-push
   integrationName: docker-rest
 """)
 
@@ -53,7 +50,6 @@ kind: ModelDeployment
 spec:
   image: "<fill-in>"
   minReplicas: 1
-  ImagePullConnectionID: docker-ci
 """)
 
 

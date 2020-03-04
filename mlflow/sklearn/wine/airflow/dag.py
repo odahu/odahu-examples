@@ -77,7 +77,6 @@ packaging_id = "airflow-wine"
 packaging = ModelPackaging(
     id=packaging_id,
     spec=ModelPackagingSpec(
-        targets=[Target(name="docker-push", connection_name="docker-ci")],
         integration_name="docker-rest"
     ),
 )
