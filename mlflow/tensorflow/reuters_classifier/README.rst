@@ -61,8 +61,7 @@ The example contains the following files:
    Contain set of help functions and :ref:`ModelWrapper` class, that allow to add extra functionality to model
 
 
-Because of in general deep learning libraries require matrix of number features we should tokenize text corpus,
-and encode labels that try to predict.
+Because of, in general, deep learning libraries require matrix of number features, we should tokenize text corpus, and encode labels that try to predict.
 
 Word tokenizer and label encoder should also be packed as artifacts with the model because we should encode data
 that model receive for predictions
