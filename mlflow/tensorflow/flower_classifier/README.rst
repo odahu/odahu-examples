@@ -108,8 +108,50 @@ run_id ``101``.
    python score_images_spark.py --model-uri runs:/101/model --data-path /path/to/images/for/scoring
 
 
+How to predict flower class using image
+------------------------------------------
 
+In order to get prediction from trained and deployed in ODAHU cluster flower model you should
 
+  1. Encode flower image in base64 and save it into json payload for api
+     (You can also `download original dataset <http://download.tensorflow.org/example_images/flower_photos.tgz>`_)
+
+  .. code-block:: console
+
+     $ jq -n --arg encoded_image "$(base64 odahuflow/tulip.jpg)" '{"columns": ["image"], "data": [[$encoded_image]]}' > odahuflow/request.json
+
+  2. Make request to API (Do not forget login previously using odahuflow login --url <cluster-url>)
+
+  .. code-block:: console
+
+     $ odahuflowctl model invoke --md=flower-classifier --json-file=odahuflow/request.json | jq
+
+  3. You can see result like this
+
+  .. code-block:: json
+
+    {
+      "prediction": [
+        [
+          "tulips",
+          "4",
+          "0.05327853",
+          "0.23025948",
+          "0.23088738",
+          "0.22562687",
+          "0.2599477"
+        ]
+      ],
+      "columns": [
+        "predicted_label",
+        "predicted_label_id",
+        "p(sunflowers)",
+        "p(dandelion)",
+        "p(roses)",
+        "p(daisy)",
+        "p(tulips)"
+      ]
+    }
 
 
 
