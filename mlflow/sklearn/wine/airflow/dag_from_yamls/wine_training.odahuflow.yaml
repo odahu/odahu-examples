@@ -7,9 +7,6 @@ spec:
   toolchain: mlflow
   entrypoint: main
   workDir: mlflow/sklearn/wine
-  data:
-    - connName: {conn_name}
-      localPath: mlflow/sklearn/wine/wine-quality.csv
   hyperParameters:
     alpha: "1.0"
   resources:
@@ -17,7 +14,7 @@ spec:
       cpu: 4
       memory: 4Gi
     requests:
-      cpu: 4
-      memory: 4Gi
+      cpu: 2
+      memory: 2Gi
   vcsName: odahu-flow-examples
 

@@ -1,10 +1,6 @@
 from datetime import datetime
 
 from airflow import DAG
-from airflow.contrib.operators.gcs_to_gcs import GoogleCloudStorageToGoogleCloudStorageOperator
-from airflow.models import Variable
-from airflow.operators.bash_operator import BashOperator
-from odahuflow.airflow_plugin.connection import GcpConnectionToOdahuConnectionOperator
 from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
 from odahuflow.airflow_plugin.model import ModelPredictRequestOperator, ModelInfoRequestOperator
 from odahuflow.airflow_plugin.packaging import PackagingOperator, PackagingSensor
@@ -23,18 +19,7 @@ default_args = {
 api_connection_id = "odahuflow_api"
 model_connection_id = "odahuflow_model"
 
-gcp_project = Variable.get("GCP_PROJECT")
-wine_bucket = Variable.get("WINE_BUCKET")
-
-
-wine_conn_id, wine = resource(
-    'wine_connection.odahuflow.yaml',
-    wine_bucket=wine_bucket, gcp_project=gcp_project,
-)
-
-training_id, training = resource(
-    'wine_training.odahuflow.yaml', conn_name=wine_conn_id,
-)
+training_id, training = resource('wine_training.odahuflow.yaml')
 
 packaging_id, packaging = resource("""
 id: airflow-wine-from-yamls
@@ -67,29 +52,6 @@ dag = DAG(
 )
 
 with dag:
-    data_extraction = GoogleCloudStorageToGoogleCloudStorageOperator(
-        task_id='data_extraction',
-        google_cloud_storage_conn_id='wine_input',
-        source_bucket=wine_bucket,
-        destination_bucket=wine_bucket,
-        source_object='input/*.csv',
-        destination_object='data/',
-        project_id=gcp_project,
-        default_args=default_args
-    )
-    data_transformation = BashOperator(
-        task_id='data_transformation',
-        bash_command='echo "imagine that we transform a data"',
-        default_args=default_args
-    )
-    odahuflow_conn = GcpConnectionToOdahuConnectionOperator(
-        task_id='odahuflow_connection_creation',
-        google_cloud_storage_conn_id='wine_input',
-        api_connection_id=api_connection_id,
-        conn_template=wine,
-        default_args=default_args
-    )
-
     train = TrainingOperator(
         task_id="training",
         api_connection_id=api_connection_id,
@@ -151,7 +113,6 @@ with dag:
         default_args=default_args
     )
 
-    data_extraction >> data_transformation >> odahuflow_conn >> train
     train >> wait_for_train >> pack >> wait_for_pack >> dep >> wait_for_dep
     wait_for_dep >> model_info_request
     wait_for_dep >> model_predict_request
