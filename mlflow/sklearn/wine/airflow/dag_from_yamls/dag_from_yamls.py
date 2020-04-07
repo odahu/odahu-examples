@@ -19,7 +19,7 @@ default_args = {
 api_connection_id = "odahuflow_api"
 model_connection_id = "odahuflow_model"
 
-training_id, training = resource('wine_training.odahuflow.yaml')
+training_id, training = resource('mlflow/sklearn/wine/airflow/dag_from_yamls/wine_training.odahuflow.yaml')
 
 packaging_id, packaging = resource("""
 id: airflow-wine-from-yamls
