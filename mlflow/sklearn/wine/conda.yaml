@@ -2,6 +2,7 @@ name: example
 channels:
   - defaults
 dependencies:
+  - pip
   - python=3.6
   - numpy=1.14.3
   - pandas=0.22.0
