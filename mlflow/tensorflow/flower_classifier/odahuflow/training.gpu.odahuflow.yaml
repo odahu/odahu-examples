@@ -9,11 +9,11 @@ spec:
   workDir: mlflow/tensorflow/flower_classifier
   resources:
     limits:
-      gpu: 2
+      gpu: 1
       cpu: 4
       memory: 16Gi
     requests:
-      gpu: 2
+      gpu: 1
       cpu: 4
       memory: 16Gi
   vcsName: odahu-flow-examples
