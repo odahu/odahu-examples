@@ -14,10 +14,10 @@ spec:
     alpha: "1.0"
   resources:
     limits:
-      cpu: 4024m
-      memory: 4024Mi
+      cpu: 4
+      memory: 4Gi
     requests:
-      cpu: 2024m
-      memory: 2024Mi
+      cpu: 2
+      memory: 2Gi
   vcsName: odahu-flow-examples
 
