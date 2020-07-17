@@ -27,6 +27,13 @@ kind: ModelPackaging
 spec:
   artifactName: "<fill-in>"
   integrationName: docker-rest
+  resources:
+    requests:
+      cpu: 2
+      memory: 2Gi
+    limits:
+      cpu: 2
+      memory: 2Gi
 """)
 
 deployment_id, deployment = resource("""
