@@ -30,10 +30,10 @@ spec:
   resources:
     requests:
       cpu: 2
-      memory: 2Gi
+      memory: 2.5Gi
     limits:
       cpu: 2
-      memory: 2Gi
+      memory: 4Gi
 """)
 
 deployment_id, deployment = resource("""
