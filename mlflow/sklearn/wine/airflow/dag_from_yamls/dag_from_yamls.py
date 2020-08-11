@@ -42,6 +42,9 @@ kind: ModelDeployment
 spec:
   image: "<fill-in>"
   minReplicas: 1
+  resources:
+    limits:
+      memory: 512Mi
 """)
 
 
