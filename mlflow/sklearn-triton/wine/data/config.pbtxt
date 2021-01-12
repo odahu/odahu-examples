@@ -1,0 +1,16 @@
+name: "wine"
+backend: "python"
+input [
+  {
+    name: "input0"
+    data_type: TYPE_FP32
+    dims: [ -1, 11 ]
+  }
+]
+output [
+  {
+    name: "output0"
+    data_type: TYPE_FP32
+    dims: [ -1 ]
+  }
+]
