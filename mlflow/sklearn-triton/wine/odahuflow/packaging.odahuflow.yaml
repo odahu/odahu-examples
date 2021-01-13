@@ -2,7 +2,7 @@ id: wine
 kind: ModelPackaging
 spec:
   artifactName: "<fill-in>"
-  integrationName: docker-rest
+  integrationName: docker-triton
   resources:
     limits:
       cpu: "1.5"
