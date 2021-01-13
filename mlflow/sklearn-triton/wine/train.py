@@ -69,6 +69,5 @@ if __name__ == "__main__":
 
         dump(lr, os.path.join(output_dir, 'model'))
 
-        print(output_dir)
         train_x.head().to_pickle(os.path.join(output_dir, 'head_input.pkl'))
         train_y.head().to_pickle(os.path.join(output_dir, 'head_output.pkl'))

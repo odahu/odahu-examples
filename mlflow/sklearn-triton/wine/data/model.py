@@ -10,6 +10,8 @@ from sklearn.linear_model import ElasticNet
 
 import triton_python_backend_utils as pb_utils
 
+import logging
+
 
 class TritonPythonModel:
     """Your Python model must use the same class name. Every Python model
@@ -71,7 +73,7 @@ class TritonPythonModel:
             #
             # pb_utils.InferenceResponse(
             #    output_tensors=..., TritonError("An error occured"))
-            inference_response = pb_utils.InferenceResponse(output_tensors=[out])
+            inference_response = pb_utils.InferenceResponse(output_tensors=[pb_utils.Tensor("output0", out)])
             responses.append(inference_response)
 
         # You should return a list of pb_utils.InferenceResponse. Length
