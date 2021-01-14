@@ -3,6 +3,9 @@ kind: ModelPackaging
 spec:
   artifactName: "<fill-in>"
   integrationName: docker-triton
+  targets:
+    - name: docker-push
+      connectionName: docker-ci
   resources:
     limits:
       cpu: "1.5"
