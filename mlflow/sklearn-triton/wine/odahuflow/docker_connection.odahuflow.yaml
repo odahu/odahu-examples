@@ -1,0 +1,9 @@
+kind: Connection
+id: docker-ci
+spec:
+  type: docker
+  uri: <paste uri of your registry here>  # for example: gcr.io/or2-msq-epmd-legn-t1iylu/gke-odahuflow-ds
+  username: <paste your username here>
+  password: <paste your password here>
+  description: Docker repository for model packaging
+  webUILink: <paste webui link>

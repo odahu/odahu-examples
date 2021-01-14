@@ -1,0 +1,10 @@
+kind: Connection
+id: odahu-flow-examples
+spec:
+  type: git
+  uri: git@github.com:odahu/odahu-examples.git
+  reference: origin/master
+  publicKey: <paste here your public github ssh key>
+  keySecret: <paste here your key github ssh key>
+  description: Git repository with odahu-flow-examples
+  webUILink: https://github.com/odahu/odahu-examples

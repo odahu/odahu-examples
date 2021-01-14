@@ -1,0 +1,15 @@
+id: wine
+kind: ModelPackaging
+spec:
+  artifactName: "<fill-in>"
+  integrationName: docker-triton
+  targets:
+    - name: docker-push
+      connectionName: docker-ci
+  resources:
+    limits:
+      cpu: "1.5"
+      memory: 4Gi
+    requests:
+      cpu: "1.5"
+      memory: 2Gi
