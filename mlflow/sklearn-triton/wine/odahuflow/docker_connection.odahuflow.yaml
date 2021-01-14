@@ -3,7 +3,7 @@ id: docker-ci
 spec:
   type: docker
   uri: <past uri of your registry here>  # for example: gcr.io/or2-msq-epmd-legn-t1iylu/gke-odahuflow-ds
-  username: <past your username here>
+  username: <paste your username here>
   password: <paste your password here>
   description: Docker repository for model packaging
   webUILink: <paste webui link>
