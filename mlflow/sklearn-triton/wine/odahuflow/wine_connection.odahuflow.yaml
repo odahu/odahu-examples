@@ -3,6 +3,6 @@ id: wine
 spec:
   type: gcs
   uri: gs://<paste your bucket address here>/data/wine-quality.csv
-  region: <past region here>
+  region: <paste region here>
   keySecret: <paste key secret here>
   description: Wine dataset
