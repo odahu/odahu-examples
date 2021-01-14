@@ -6,7 +6,7 @@ spec:
     version: 1.0
   toolchain: mlflow-project
   entrypoint: main
-  workDir: mlflow/sklearn/wine
+  workDir: mlflow/sklearn-triton/wine
   data:
     - connName: wine
       localPath: mlflow/sklearn/wine/wine-quality.csv
