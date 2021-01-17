@@ -1,7 +1,7 @@
 version: 2.1
 
 jobs:
-  check-vulnerabilities:
+  security-check:
     docker:
       - image: circleci/python:3.6
     steps:
@@ -12,5 +12,5 @@ jobs:
 workflows:
   main:
     jobs:
-      - check-vulnerabilities
+      - security-check
 
