@@ -14,4 +14,3 @@ workflows:
   main:
     jobs:
       - security-check
-
