@@ -1,0 +1,16 @@
+---
+version: 2.1
+
+jobs:
+  security-check:
+    docker:
+      - image: circleci/python:3.6
+    steps:
+      - checkout
+      - run: sudo make install-vulnerabilities-checker
+      - run: make check-vulnerabilities
+
+workflows:
+  main:
+    jobs:
+      - security-check
