@@ -41,6 +41,7 @@ id: airflow-wine-from-yamls
 kind: ModelDeployment
 spec:
   image: "<fill-in>"
+  predictor: "odahu-ml-server"
   minReplicas: 1
 """)
 
