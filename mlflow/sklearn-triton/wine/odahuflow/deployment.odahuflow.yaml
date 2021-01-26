@@ -1,0 +1,12 @@
+id: wine-triton
+kind: ModelDeployment
+spec:
+  predictor: triton
+  minReplicas: 1
+  resources:
+    limits:
+      cpu: "2"
+      memory: 4Gi
+    requests:
+      cpu: "1"
+      memory: 2Gi
