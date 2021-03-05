@@ -2,7 +2,7 @@ id: flower-classifier
 kind: ModelDeployment
 spec:
   image: "<fill-in>"
-  predictor: odahu-ml-server
+  predictor: odahu
   livenessProbeInitialDelay: 90
   readinessProbeInitialDelay: 90
   minReplicas: 1

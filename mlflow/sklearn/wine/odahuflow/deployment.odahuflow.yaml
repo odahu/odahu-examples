@@ -2,5 +2,5 @@ id: wine
 kind: ModelDeployment
 spec:
   image: "<fill-in>"
-  predictor: odahu-ml-server
+  predictor: odahu
   minReplicas: 1
