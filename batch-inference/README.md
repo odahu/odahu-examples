@@ -22,6 +22,7 @@ Every number in input tensor will be multiplied by `multiplier` and returned as 
 - `model` defines model files
     - `odahuflow.project.yaml` metadata file that is required by ODAHU 
     - `multiplier.txt` file that contains multiplier. This file is used by predictor.py script
+- `dag.py` example of using airflow plugin to schedule inference job
 
 
 ### How to
