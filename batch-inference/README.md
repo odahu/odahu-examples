@@ -43,3 +43,10 @@ POST /api/v1/batch/job -d @manifests/inferencejob.yaml
 ```
 
 7. Check `InferenceJob.spec.outputDestination.path`. It should contain the same output as `output` folder
+
+
+### Packed version
+
+Example also contains manifests with suffix `-packed.yaml` as well as model.tar.gz file. 
+These files demonstrate the way to use packaged model as model artifacts. It will be unpacked and delivered to 
+predictor container.
