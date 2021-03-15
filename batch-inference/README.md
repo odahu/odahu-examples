@@ -29,15 +29,17 @@ Every number in input tensor will be multiplied by `multiplier` and returned as 
 
 1. Upload `input` files into object storage that is available via `Connection` to ODAHU Cluster
 2. Upload `model` files into object storage that is available via `Connection` to ODAHU Cluster
-3. Register `inferenceservice.yaml` by making 
+3. Build and push predictor image using `predictor` files
+4. Fill `.spec.image` in `inferenceservice.yaml` by image name from (3)
+5. Register `inferenceservice.yaml` by making 
 
 ```http request
 POST /api/v1/batch/service -d @manifests/inferenceservice.yaml
 ```
-4. Launch `inferencejob.yaml` by making 
+6. Launch `inferencejob.yaml` by making 
 
 ```http request
 POST /api/v1/batch/job -d @manifests/inferencejob.yaml
 ```
 
-5. Check `InferenceJob.spec.outputDestination.path`. It should contain the same output as `output` folder
+7. Check `InferenceJob.spec.outputDestination.path`. It should contain the same output as `output` folder
