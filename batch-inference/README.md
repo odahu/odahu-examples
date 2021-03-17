@@ -10,8 +10,8 @@ Every number in input tensor will be multiplied by `multiplier` and returned as 
 
 ### Example structure:
 
-- `input` defines inference request in [kubeflow format](https://github.com/kubeflow/kfserving/blob/master/docs/predict-api/v2/required_api.md#inference-request-json-object)
-- `output` defines expected inference response in [kubeflow format](https://github.com/kubeflow/kfserving/blob/master/docs/predict-api/v2/required_api.md#inference-response-json-object)
+- `input` defines inference request in [kubeflow format](https://github.com/kubeflow/kfserving/blob/v0.5.1/docs/predict-api/v2/required_api.md#inference-request-json-object)
+- `output` defines expected inference response in [kubeflow format](https://github.com/kubeflow/kfserving/blob/v0.5.1/docs/predict-api/v2/required_api.md#inference-response-json-object)
 - `manifests` defines manifests for ODAHU API
     - `inferenceservice.yaml` is a definition of batch inference service
     - `inferencejob.yaml.yaml` is a definition of batch inference job
