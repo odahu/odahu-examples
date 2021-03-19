@@ -71,6 +71,7 @@ deployment = ModelDeployment(
     id=deployment_id,
     spec=ModelDeploymentSpec(
         min_replicas=1,
+        predictor="odahu-ml-server",
     ),
 )
 
