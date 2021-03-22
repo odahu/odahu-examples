@@ -1,7 +1,8 @@
 kind: Connection
 id: odahu-flow-examples
 spec:
-  type: git
+  type: mlflow
+  purpose: modelTarget
   uri: git@github.com:odahu/odahu-examples.git
   reference: origin/master
   publicKey: <paste here your public github ssh key>

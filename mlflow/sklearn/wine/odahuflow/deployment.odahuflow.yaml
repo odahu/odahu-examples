@@ -1,6 +1,24 @@
 id: wine
-kind: ModelDeployment
+kind: InferenceService
 spec:
-  image: "<fill-in>"
+  serviceRegistry:
+    type: docker
+    pullConnection: private-gcr-registry
+    imageName: model-1
+  modelRegistry:
+    connName: models-registry
+    modelName: "<fill-in>"  # (path / archive name inside bucket)
   predictor: odahu-ml-server
   minReplicas: 1
+---
+id: wine
+kind: BatchInferenceService
+spec:
+  serviceRegistry:
+    type: docker
+    pullConnection: private-gcr-registry
+    imageName: generic-mlflow-predictor
+  modelRegistry:
+    connName: models-registry
+    modelName: "<fill-in>"  # (path / archive name inside bucket)
+

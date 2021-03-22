@@ -1,5 +1,5 @@
-kind: ModelTraining
 id: wine
+kind: ModelTraining
 spec:
   model:
     name: wine
@@ -7,9 +7,17 @@ spec:
   toolchain: mlflow
   entrypoint: main
   workDir: mlflow/sklearn/wine
-  data:
-    - connName: wine
-      localPath: mlflow/sklearn/wine/wine-quality.csv
+  # READ - ONLY
+  featureSource:
+    - connName: features-source #(bucket: odahu-demo01-feature-store)
+      localPath: wpm-model/rc01/
+      namespace: ...
+  # READ - ONLY
+  algorithmSource:
+    connName: algorithms-source
+  # WRITE - ONLY
+  modelRegistry:
+    connName: models-registry
   hyperParameters:
     alpha: "1.0"
   resources:
@@ -19,5 +27,5 @@ spec:
     requests:
       cpu: 2
       memory: 2Gi
-  vcsName: odahu-flow-examples
+
 

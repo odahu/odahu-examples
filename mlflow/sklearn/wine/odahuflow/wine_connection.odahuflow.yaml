@@ -2,7 +2,9 @@ kind: Connection
 id: wine
 spec:
   type: gcs
+  purpose: dataSource,modelsOutput,algorithmSource
   uri: gs://<paste your bucket address here>/data/wine-quality.csv
   region: <past region here>
+  keyID: <paste key name here>
   keySecret: <paste key secret here>
-  description: Wine dataset
+  description: Data source connection

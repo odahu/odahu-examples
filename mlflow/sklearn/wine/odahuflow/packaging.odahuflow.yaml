@@ -1,7 +1,16 @@
 id: wine
 kind: ModelPackaging
 spec:
-  artifactName: "<fill-in>"
+  modelsRegistry:
+    connName: models-registry
+    modelName: "<fill-in>"  # (path / archive name inside bucket)
+  serviceRegistry:
+    type: docker
+    pull-connection: private-gcr-registry
+    push-connection: docker-public-registry
+#  serviceRegistry:
+#    type: cloud-function
+#    bucket-connection: cloud-function-bucket-connection
   integrationName: docker-rest
   resources:
     limits:
