@@ -16,5 +16,7 @@ spec:
     requests:
       cpu: 2
       memory: 2Gi
-  vcsName: odahu-flow-examples
+  algorithmSource:
+    vcs:
+      connection: odahu-flow-examples
 
