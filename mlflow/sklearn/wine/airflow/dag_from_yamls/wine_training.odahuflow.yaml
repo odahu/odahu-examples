@@ -18,5 +18,5 @@ spec:
       memory: 2Gi
   algorithmSource:
     vcs:
-      connName: odahu-flow-examples
+      connection: odahu-flow-examples
 

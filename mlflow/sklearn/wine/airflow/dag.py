@@ -56,7 +56,7 @@ training = ModelTraining(
         ),
         algorithm_source=AlgorithmSource(
             vcs=VCS(
-                conn_name="odahu-flow-examples"
+                connection="odahu-flow-examples"
             )
         )
     ),
