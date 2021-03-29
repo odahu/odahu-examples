@@ -1,6 +1,6 @@
 kind: InferenceJob
 spec:
-  inferenceServiceId: test-batch-service-packed
+  inferenceServiceId: test-batch-service-embedded
   dataSource:
     connection: models-output
     path: test-data/batch_job_data/input

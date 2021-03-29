@@ -1,4 +1,4 @@
-id: test-batch-service-packed
+id: test-batch-service-embedded
 kind: InferenceService
 spec:
   args:
