@@ -40,7 +40,7 @@ training = ModelTraining(
         },
         data=[
             DataBindingDir(
-                conn_name='wine',
+                connection='wine',
                 local_path='mlflow/sklearn/wine/wine-quality.csv'
             ),
         ],

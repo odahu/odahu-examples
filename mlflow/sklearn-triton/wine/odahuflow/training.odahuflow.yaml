@@ -8,7 +8,7 @@ spec:
   entrypoint: main
   workDir: mlflow/sklearn-triton/wine
   data:
-    - connName: wine
+    - connection: wine
       localPath: mlflow/sklearn/wine/wine-quality.csv
   hyperParameters:
     alpha: "1.0"
