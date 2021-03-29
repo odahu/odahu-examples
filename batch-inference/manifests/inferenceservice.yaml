@@ -6,6 +6,7 @@ spec:
   command:
     - python
   image: <past-image>
-  modelSource:
-    connection: models-output
-    path: test-data/batch_job_data/model
+  modelRegistry:
+    remote:
+      modelConnection: models-output
+      modelPath: test-data/batch_job_data/model

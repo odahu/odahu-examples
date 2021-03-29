@@ -7,6 +7,9 @@ spec:
     - python
   image: <past-image>
   modelRegistry:
-    remote:
-      modelConnection: models-output
-      modelPath: test-data/batch_job_data/model.tar.gz
+    local:
+      modelPath: /opt/app/model
+      meta:
+        name: test-predictor
+        version: "1"
+
