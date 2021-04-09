@@ -8,7 +8,7 @@ spec:
   entrypoint: main
   workDir: mlflow/sklearn/wine
   data:
-    - connection: wine
+    - connName: wine
       localPath: mlflow/sklearn/wine/wine-quality.csv
   hyperParameters:
     alpha: "1.0"
@@ -19,7 +19,5 @@ spec:
     requests:
       cpu: 2
       memory: 2Gi
-  algorithmSource:
-    vcs:
-      connection: odahu-flow-examples
+  vcsName: odahu-flow-examples
 
