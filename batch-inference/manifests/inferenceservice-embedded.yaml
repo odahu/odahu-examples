@@ -1,0 +1,15 @@
+id: test-batch-service-embedded
+kind: InferenceService
+spec:
+  args:
+    - /opt/app/predictor.py
+  command:
+    - python
+  image: <past-image>
+  modelRegistry:
+    local:
+      modelPath: /opt/app/model
+      meta:
+        name: test-predictor
+        version: "1"
+

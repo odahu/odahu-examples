@@ -19,6 +19,7 @@ Every number in input tensor will be multiplied by `multiplier` and returned as 
               during batch inference process. The goal of the predictor is handle input
               and provide output in kubeflow format. 
               Predictor follows ODAHU Batch inference predictor image protocol.
+- `predictor_embedded` defines a predictor image with embedded model
 - `model` defines model files
     - `odahuflow.project.yaml` metadata file that is required by ODAHU 
     - `multiplier.txt` file that contains multiplier. This file is used by predictor.py script
