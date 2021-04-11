@@ -10,7 +10,7 @@ spec:
   hyperParameters:
     maxwords: "999"
   data:
-    - connection: models-output
+    - connName: models-output
       localPath: mlflow/tensorflow/reuters_classifier/data/
       remotePath: /reuters/
   resources:
@@ -20,6 +20,4 @@ spec:
     requests:
       cpu: 3
       memory: 2Gi
-  algorithmSource:
-    vcs:
-      connection: odahu-flow-examples
+  vcsName: odahu-flow-examples

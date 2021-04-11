@@ -4,7 +4,7 @@ from airflow import DAG
 from airflow.models import Variable
 from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
     ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec, Connection, ConnectionSpec, \
-    DataBindingDir, AlgorithmSource, VCS
+    DataBindingDir
 
 from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
 from odahuflow.airflow_plugin.model import ModelPredictRequestOperator, ModelInfoRequestOperator
@@ -40,7 +40,7 @@ training = ModelTraining(
         },
         data=[
             DataBindingDir(
-                connection='wine',
+                conn_name='wine',
                 local_path='mlflow/sklearn/wine/wine-quality.csv'
             ),
         ],
@@ -54,11 +54,7 @@ training = ModelTraining(
                 memory="2024Mi"
             )
         ),
-        algorithm_source=AlgorithmSource(
-            vcs=VCS(
-                connection="odahu-flow-examples"
-            )
-        )
+        vcs_name="odahu-flow-examples"
     ),
 )
 
