@@ -13,15 +13,26 @@
 #  limitations under the License.
 
 import os
+import argparse
 
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+import mlflow.keras
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--training-data', default='./PetImages')
+parser.add_argument('--epochs', type=int, default=10)
+params = parser.parse_args()
+
+epochs = params.epochs
+training_data_path = params.training_data
 
 
 num_skipped = 0
 for folder_name in ("Cat", "Dog"):
-    folder_path = os.path.join("PetImages", folder_name)
+    folder_path = os.path.join(training_data_path, folder_name)
     for fname in os.listdir(folder_path):
         fpath = os.path.join(folder_path, fname)
         try:
@@ -42,7 +53,7 @@ image_size = (180, 180)
 batch_size = 32
 
 train_ds = tf.keras.preprocessing.image_dataset_from_directory(
-    "PetImages",
+    training_data_path,
     validation_split=0.2,
     subset="training",
     seed=1337,
@@ -122,7 +133,6 @@ def make_model(input_shape, num_classes):
 
 model = make_model(input_shape=image_size + (3,), num_classes=2)
 
-epochs = 50
 
 callbacks = [keras.callbacks.ModelCheckpoint("save_at_{epoch}.h5")]
 
@@ -135,7 +145,7 @@ model.compile(
 model.fit(train_ds, epochs=epochs, callbacks=callbacks, validation_data=val_ds)
 
 img = keras.preprocessing.image.load_img(
-    "PetImages/Cat/6779.jpg", target_size=image_size
+    os.path.join(training_data_path, "Cat/6779.jpg"), target_size=image_size
 )
 img_array = keras.preprocessing.image.img_to_array(img)
 img_array = tf.expand_dims(img_array, 0)  # Create batch axis
@@ -144,3 +154,4 @@ predictions = model.predict(img_array)
 score = predictions[0]
 print(f'This image is {100 * (1 - score):.2f} percent cat and {100 * score:.2f} percent dog.')
 
+mlflow.keras.log_model(keras_model=model, artifact_path='models')
