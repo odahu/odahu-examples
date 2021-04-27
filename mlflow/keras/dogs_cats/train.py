@@ -14,6 +14,7 @@
 
 import os
 import argparse
+import zipfile
 
 import tensorflow as tf
 from tensorflow import keras
@@ -22,12 +23,17 @@ import mlflow.keras
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--training-data', default='./PetImages')
+parser.add_argument('--training-data', default='./dogs_cats.zip')
 parser.add_argument('--epochs', type=int, default=10)
 params = parser.parse_args()
 
 epochs = params.epochs
 training_data_path = params.training_data
+
+
+with zipfile.open(training_data_path) as dataset_zip:
+    dataset_zip.extractall()
+training_data_path = 'PetImages'
 
 
 num_skipped = 0
