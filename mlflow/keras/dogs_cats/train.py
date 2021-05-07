@@ -31,7 +31,7 @@ epochs = params.epochs
 training_data_path = params.training_data
 
 
-with zipfile.open(training_data_path) as dataset_zip:
+with zipfile.ZipFile(training_data_path) as dataset_zip:
     dataset_zip.extractall()
 training_data_path = 'PetImages'
 
