@@ -27,6 +27,8 @@ parser.add_argument('--training-data', default='./dogs_cats.zip')
 parser.add_argument('--epochs', type=int, default=10)
 params = parser.parse_args()
 
+print(f'Training parameters: {params}')
+
 epochs = params.epochs
 training_data_path = params.training_data
 
