@@ -22,6 +22,8 @@ from tensorflow.keras import layers
 import mlflow.keras
 
 
+output_dir = os.environ.get("ODAHUFLOW_OUTPUT_DIR")\
+
 parser = argparse.ArgumentParser()
 parser.add_argument('--training-data')
 parser.add_argument('--epochs', type=int)
@@ -162,4 +164,4 @@ predictions = model.predict(img_array)
 score = predictions[0]
 print(f'Prediction: {score}')
 
-mlflow.keras.log_model(keras_model=model, artifact_path='model')
+mlflow.keras.save_model(keras_model=model, path=os.path.join(output_dir, 'model'))
