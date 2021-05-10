@@ -23,8 +23,8 @@ import mlflow.keras
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--training-data', default='./dogs_cats.zip')
-parser.add_argument('--epochs', type=int, default=10)
+parser.add_argument('--training-data')
+parser.add_argument('--epochs', type=int)
 params = parser.parse_args()
 
 print(f'Training parameters: {params}')
