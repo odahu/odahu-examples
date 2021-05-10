@@ -164,4 +164,4 @@ predictions = model.predict(img_array)
 score = predictions[0]
 print(f'Prediction: {score}')
 
-model.save(os.path.join(output_dir), 'model.savedmodel')
+model.save(os.path.join(output_dir, 'model.savedmodel'))
