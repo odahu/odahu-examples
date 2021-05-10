@@ -164,4 +164,4 @@ predictions = model.predict(img_array)
 score = predictions[0]
 print(f'Prediction: {score}')
 
-mlflow.keras.save_model(keras_model=model, path=os.path.join(output_dir, 'model'))
+model.save(output_dir)
