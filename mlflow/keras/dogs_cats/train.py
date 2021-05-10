@@ -162,4 +162,4 @@ predictions = model.predict(img_array)
 score = predictions[0]
 print(f'Prediction: {score}')
 
-mlflow.keras.log_model(keras_model=model, artifact_path='models')
+mlflow.keras.log_model(keras_model=model, artifact_path='model')
