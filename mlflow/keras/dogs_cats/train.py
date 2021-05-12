@@ -22,7 +22,7 @@ from tensorflow.keras import layers
 import mlflow.keras
 
 
-output_dir = os.environ.get("ODAHUFLOW_OUTPUT_DIR")\
+output_dir = os.environ.get("ODAHUFLOW_OUTPUT_DIR")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--training-data')
