@@ -21,8 +21,6 @@
 '''
 from datetime import datetime
 
-import time
-
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator, PythonVirtualenvOperator
 from airflow.utils.dates import days_ago
@@ -47,14 +45,12 @@ default_args = {
     'start_date': datetime(2019, 9, 3),
     'email_on_failure': False,
     'email_on_retry': False,
-    'end_date': datetime(2099, 12, 31)
 }
 
 with DAG(
     dag_id='dogs_cats_scenario',
     default_args=default_args,
     schedule_interval=None,
-    start_date=days_ago(2),
     tags=['example'],
 ) as dag:
 
@@ -147,7 +143,6 @@ with DAG(
         task_id='submit_training',
         api_connection_id=API_CONNECTION_ID,
         training=training,
-        default_args=default_args
     )
 
     wait_for_train = TrainingSensor(
@@ -155,7 +150,6 @@ with DAG(
         training_id=training_id,
         api_connection_id=API_CONNECTION_ID,
         timeout=60 * 60 * 4,  # 4 hours
-        default_args=default_args
     )
 
     packaging_id = 'dogs-cats-classifier'
@@ -181,14 +175,12 @@ with DAG(
         api_connection_id=API_CONNECTION_ID,
         packaging=packaging,
         trained_task_id='training',
-        default_args=default_args
     )
 
     wait_for_pack = PackagingSensor(
         task_id='packaging',
         packaging_id=packaging_id,
         api_connection_id=API_CONNECTION_ID,
-        default_args=default_args
     )
 
     deployment_id = 'dogs-cats-classifier'
@@ -210,14 +202,12 @@ with DAG(
         api_connection_id=API_CONNECTION_ID,
         deployment=deployment,
         packaging_task_id='packaging',
-        default_args=default_args
     )
 
     wait_for_dep = DeploymentSensor(
         task_id='deployment',
         deployment_id=deployment_id,
         api_connection_id=API_CONNECTION_ID,
-        default_args=default_args
     )
 
     ensure_dataset_in_bucket >> train >> wait_for_train >> pack >> wait_for_pack \
