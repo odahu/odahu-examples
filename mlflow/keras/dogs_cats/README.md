@@ -70,3 +70,72 @@ print(image_tensor)
 Triton Server implements KFServing Predict Protocol Version 2. Visit 
 [this page](https://github.com/kubeflow/kfserving/blob/master/docs/predict-api/v2/required_api.md)
 to learn more about available HTTP endpoints for inference or metadata. 
+
+### Classification request via UI
+
+Visit the **PLAY** tab of `ModelDeployment`. Make a GET request to a model to get a list of expected inputs.
+
+![play_get_meta](images/play_get_meta.png)
+
+JSON response with model metadata:
+
+```json
+{
+  "name": "dogs-cats-classifier",
+  "versions": ["1"],
+  "platform": "tensorflow_savedmodel",
+  "inputs": [{
+    "name": "input_1",
+    "datatype": "FP32",
+    "shape": [-1, 180, 180, 3]
+  }],
+  "outputs": [{
+    "name": "dense",
+    "datatype": "FP32",
+    "shape": [-1, 1]
+  }]
+}
+```
+Notice the definition of inputs expected by the model. Now we will use it to build an inference request JSON. 
+Most of the data is omitted in this snippet to keep it small.
+
+```json
+{
+   "inputs": [{
+      "name": "input_1",
+      "datatype": "FP32",
+      "shape": [1, 180, 180, 3],
+      "data": [
+         [[[42,40,52],[33,32,39],[20,19,18],[37,34,31],
+            ...
+            <much more data omitted here>
+            ...
+            [163,132,133],[153,123,124],[139,114,108]]]
+      ]
+   }]
+}
+```
+
+Make an inference request to deployed model to get the result of classification.
+Inference Request:
+![play_request](images/play_request.png)
+Inference Response:
+![play_response](images/play_response.png)
+
+Response JSON:
+```json
+{
+  "model_name": "dogs-cats-classifier",
+  "model_version": "1",
+  "outputs": [
+    {
+      "name": "dense",
+      "datatype": "FP32",
+      "shape": [1, 1],
+      "data": [0.9999841451644897]
+    }
+  ]
+}
+```
+
+The model returned the probability that input image is a picture of a dog. In above example it is 99%.
