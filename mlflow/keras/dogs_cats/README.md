@@ -117,6 +117,7 @@ Most of the data is omitted in this snippet to keep it small.
 ```
 
 Make an inference request to deployed model to get the result of classification.
+
 Inference Request:
 ![play_request](images/play_request.png)
 Inference Response:
