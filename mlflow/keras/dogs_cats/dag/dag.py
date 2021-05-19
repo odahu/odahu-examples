@@ -134,7 +134,7 @@ with DAG(
             algorithm_source=AlgorithmSource(vcs=VCS(
                 connection='odahu-flow-examples',
                 # TODO: switch to develop
-                reference='feat/dogs-cats-example'
+                reference='develop'
             ))
         ),
     )
