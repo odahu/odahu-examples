@@ -1,0 +1,13 @@
+name: DogCatClassifier
+
+conda_env: conda.yaml
+
+entry_points:
+  # train Keras DL model
+  main:
+    parameters:
+      training_data: {type: string, default: "./dogs_cats.zip"}
+      epochs: {type: int, default: 1}
+    command: "python train.py --training-data {training_data}
+                              --epochs {epochs}"
+
