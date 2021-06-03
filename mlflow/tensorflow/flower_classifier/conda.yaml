@@ -7,10 +7,8 @@ dependencies:
   - python=3.7
   - pandas=1.0.1
   - scikit-learn=0.22.1
-  - tensorflow-gpu=1.5.0
+  - tensorflow-gpu=1.13.1
   - keras=2.2.4
   - pip:
     - mlflow==1.5.0
     - pillow==7.0.0
-    # fix: https://stackoverflow.com/questions/67236747/str-object-has-no-attribute-decode-for-tensorflow-in-python
-    - h5py==2.10.0
