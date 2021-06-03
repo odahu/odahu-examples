@@ -10,7 +10,7 @@ dependencies:
   - tensorflow-gpu=1.13.1
   - keras=2.2.4
   # https://github.com/keras-team/keras/issues/14265
-  - h5py < 3.0.0
+  - h5py < 2.10.0
   - pip:
     - mlflow==1.5.0
     - pillow==7.0.0
