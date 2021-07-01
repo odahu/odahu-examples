@@ -7,6 +7,9 @@ spec:
   toolchain: mlflow-project
   entrypoint: main
   workDir: mlflow/sklearn-triton/wine
+  envs:
+    - name: STATIC_ARTIFACTS_DIR
+      value: data
   data:
     - connection: wine
       localPath: mlflow/sklearn/wine/wine-quality.csv
