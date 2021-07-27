@@ -19,3 +19,4 @@ spec:
   algorithmSource:
     vcs:
       connection: odahu-flow-examples
+      reference: use-mlflow-model-registry
