@@ -13,3 +13,4 @@ dependencies:
   - pip:
     - mlflow==1.5.0
     - pillow==7.0.0
+    - google-cloud-storage==1.41.1

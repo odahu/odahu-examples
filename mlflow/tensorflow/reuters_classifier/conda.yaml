@@ -11,3 +11,4 @@ dependencies:
   - pip:
       - mlflow>=1.0
       - papermill==1.2.1
+      - google-cloud-storage==1.41.1
