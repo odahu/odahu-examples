@@ -2,7 +2,7 @@ kind: ModelTraining
 id: flower-classifier
 spec:
   model:
-    name: flower-classifier
+    name: flower-classifier-new
     version: 2.0
   toolchain: mlflow
   entrypoint: main

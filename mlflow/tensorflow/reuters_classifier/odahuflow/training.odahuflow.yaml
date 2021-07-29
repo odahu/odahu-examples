@@ -2,7 +2,7 @@ kind: ModelTraining
 id: reuters-classifier
 spec:
   model:
-    name: reuters-classifier
+    name: reuters-classifier-new
     version: 1.0
   toolchain: mlflow  # MLFlow training toolchain integration
   entrypoint: main

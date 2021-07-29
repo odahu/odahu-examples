@@ -2,7 +2,7 @@ kind: ModelTraining
 id: wine
 spec:
   model:
-    name: wine
+    name: wine-new
     version: 1.0
   toolchain: mlflow
   entrypoint: main
