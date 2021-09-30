@@ -14,6 +14,7 @@ from src import parser
 from src.utils import fit_tokenizer, fit_topics_encoder, ModelWrapper, save_samples
 
 # Constants
+CONDA_FILE_PATH = 'conda.lock.linux-64.yaml'
 REUTERS_DATA_PATH = 'data'
 TOPICS_ENCODER_FILE = 'topics_encoder.pkl'
 TOKENIZER_FILE = 'tokenizer.pkl'
@@ -87,7 +88,7 @@ with mlflow.start_run():
         'keras_model': KERAS_MODEL_FILE,
     }
 
-    conda_env = 'conda.yaml'
+    conda_env = CONDA_FILE_PATH
 
     mlflow.pyfunc.log_model(
         'model', artifacts=artifacts, conda_env=conda_env,
