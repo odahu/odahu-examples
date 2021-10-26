@@ -9,10 +9,6 @@ spec:
   workDir: mlflow/tensorflow/reuters_classifier # MLproject location (in GitHub)
   hyperParameters:
     maxwords: "999"
-  data:
-    - connection: models-output
-      localPath: mlflow/tensorflow/reuters_classifier/data/
-      remotePath: /reuters/
   resources:
     limits:
       cpu: 3
