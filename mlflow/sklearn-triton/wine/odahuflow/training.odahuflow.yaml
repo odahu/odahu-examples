@@ -1,5 +1,5 @@
 kind: ModelTraining
-id: wine
+id: wine-triton
 spec:
   model:
     name: wine
@@ -12,7 +12,7 @@ spec:
       value: data
   data:
     - connection: wine
-      localPath: mlflow/sklearn/wine/wine-quality.csv
+      localPath: mlflow/sklearn-triton/wine/wine-quality.csv
   hyperParameters:
     alpha: "1.0"
   resources:

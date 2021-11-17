@@ -1,4 +1,4 @@
-id: wine
+id: wine-triton
 kind: ModelPackaging
 spec:
   artifactName: "<fill-in>"

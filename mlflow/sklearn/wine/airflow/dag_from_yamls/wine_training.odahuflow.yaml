@@ -7,6 +7,9 @@ spec:
   toolchain: mlflow
   entrypoint: main
   workDir: mlflow/sklearn/wine
+  data:
+    - connection: wine
+      localPath: mlflow/sklearn/wine/wine-quality.csv
   hyperParameters:
     alpha: "1.0"
   resources:
