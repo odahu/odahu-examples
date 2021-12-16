@@ -4,7 +4,7 @@ spec:
   model:
     name: flower-classifier
     version: 2.0
-  toolchain: mlflow
+  trainingIntegration: mlflow
   entrypoint: main
   workDir: mlflow/tensorflow/flower_classifier
   resources:

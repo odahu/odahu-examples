@@ -4,7 +4,7 @@ spec:
   model:
     name: wine
     version: 1.0
-  toolchain: mlflow-project
+  trainingIntegration: mlflow-project
   entrypoint: main
   workDir: mlflow/sklearn-triton/wine
   envs:

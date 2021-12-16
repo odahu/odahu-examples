@@ -32,7 +32,7 @@ training = ModelTraining(
             name="wine",
             version="1.0"
         ),
-        toolchain="mlflow",
+        training_integration="mlflow",
         entrypoint="main",
         work_dir="mlflow/sklearn/wine",
         hyper_parameters={
