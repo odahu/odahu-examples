@@ -22,12 +22,10 @@
 from datetime import datetime
 
 from airflow import DAG
-from airflow.operators.python_operator import PythonOperator, PythonVirtualenvOperator
-from airflow.utils.dates import days_ago
+from airflow.operators.python import PythonOperator
 
 from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
-    ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec, Connection, ConnectionSpec, \
-    DataBindingDir, AlgorithmSource, VCS
+    ModelPackaging, ModelPackagingSpec, ModelDeployment, ModelDeploymentSpec, DataBindingDir, AlgorithmSource, VCS
 from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
 from odahuflow.airflow_plugin.packaging import PackagingOperator, PackagingSensor
 from odahuflow.airflow_plugin.training import TrainingOperator, TrainingSensor
