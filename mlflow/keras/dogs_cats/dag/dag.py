@@ -62,7 +62,7 @@ with DAG(
         from urllib.request import urlretrieve
         import os
         import shutil
-        from airflow.contrib.hooks.gcs_hook import GoogleCloudStorageHook
+        from airflow.providers.google.cloud.hooks.gcs import GCSHook
 
         run_config = dag_run.conf
 
@@ -71,7 +71,7 @@ with DAG(
 
         tmp_files = set()
 
-        client = GoogleCloudStorageHook(google_cloud_storage_conn_id=airflow_data_connection)
+        client = GCSHook(google_cloud_storage_conn_id=airflow_data_connection)
         if client.exists(bucket_name, dataset_bucket_path):
             print(f'File {dataset_bucket_path} already exists in bucket {bucket_name}')
             return
@@ -81,7 +81,7 @@ with DAG(
         urlretrieve(dataset_url, filename=dataset_local_filename)
         tmp_files.add(dataset_local_filename)
 
-        client.upload(bucket=bucket_name, object=dataset_bucket_path, filename=dataset_local_filename)
+        client.upload(bucket_name=bucket_name, object_name=dataset_bucket_path, filename=dataset_local_filename)
 
         for file in tmp_files:
             print(f'Clean-up: {file}')
