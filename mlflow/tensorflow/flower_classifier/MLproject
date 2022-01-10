@@ -1,6 +1,6 @@
 name: FlowerClassifier
 
-conda_env: conda.yaml
+conda_env: conda.lock.linux-64.yaml
 
 entry_points:
   # train Keras DL model
