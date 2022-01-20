@@ -19,7 +19,7 @@ import tensorflow as tf
 
 import mlflow
 
-from image_pyfunc import decode_and_resize_image, log_model, KerasImageClassifierPyfunc
+from image_pyfunc import decode_and_resize_image, log_model
 
 
 def download_input():
