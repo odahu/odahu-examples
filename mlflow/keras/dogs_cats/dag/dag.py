@@ -19,7 +19,7 @@
 2.
 {"data_bucket": "odahu-ci-data-store"}
 '''
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
@@ -40,16 +40,18 @@ dataset_bucket_path = f'input/{dataset_local_filename}'
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2019, 9, 3),
+    'start_date': datetime.now() - timedelta(hours=1),
     'email_on_failure': False,
     'email_on_retry': False,
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
 }
 
 with DAG(
     dag_id='dogs_cats_scenario',
     default_args=default_args,
-    schedule_interval=None,
     tags=['example'],
+    schedule_interval='10 */2 * * *',
 ) as dag:
 
     def callable_virtualenv(*args, dag_run, **kwargs):
@@ -67,7 +69,7 @@ with DAG(
         run_config = dag_run.conf
 
         airflow_data_connection = run_config.get('airflow_data_connection', 'wine_input')
-        bucket_name = run_config.get('data_bucket', 'odahu-dev03-data-store')
+        bucket_name = run_config.get('data_bucket', 'odahu-dev04-data-store')
 
         tmp_files = set()
 

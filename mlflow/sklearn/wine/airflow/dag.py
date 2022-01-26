@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from airflow import DAG
 from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
@@ -12,10 +12,12 @@ from odahuflow.airflow_plugin.training import TrainingOperator, TrainingSensor
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime(2019, 9, 3),
+    'start_date': datetime.now() - timedelta(hours=1),
     'email_on_failure': False,
     'email_on_retry': False,
-    'end_date': datetime(2099, 12, 31)
+    'end_date': datetime(2099, 12, 31),
+    'retries': 1,
+    'retry_delay': timedelta(minutes=5),
 }
 
 api_connection_id = "odahuflow_api"
@@ -84,10 +86,11 @@ model_example_request = {
              [12.8, 0.029, 0.48, 0.98, 6.2, 29, 3.33, 1.2, 0.39, 75, 0.66]]
 }
 
+
 dag = DAG(
     'airflow-wine',
     default_args=default_args,
-    schedule_interval=None
+    schedule_interval='10 * * * *',
 )
 
 with dag:
