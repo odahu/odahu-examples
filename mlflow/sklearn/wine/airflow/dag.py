@@ -1,10 +1,8 @@
 from datetime import datetime
 
 from airflow import DAG
-from airflow.models import Variable
 from odahuflow.sdk.models import ModelTraining, ModelTrainingSpec, ModelIdentity, ResourceRequirements, ResourceList, \
-    ModelPackaging, ModelPackagingSpec, Target, ModelDeployment, ModelDeploymentSpec, Connection, ConnectionSpec, \
-    DataBindingDir, AlgorithmSource, VCS
+    ModelPackaging, ModelPackagingSpec, ModelDeployment, ModelDeploymentSpec, DataBindingDir, AlgorithmSource, VCS
 
 from odahuflow.airflow_plugin.deployment import DeploymentOperator, DeploymentSensor
 from odahuflow.airflow_plugin.model import ModelPredictRequestOperator, ModelInfoRequestOperator
