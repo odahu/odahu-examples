@@ -8,3 +8,4 @@ spec:
   keySecret: <paste here your key github ssh key>
   description: Git repository with odahu-flow-examples
   webUILink: https://github.com/odahu/odahu-examples
+  vital: true
