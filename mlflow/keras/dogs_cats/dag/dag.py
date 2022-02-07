@@ -40,18 +40,17 @@ dataset_bucket_path = f'input/{dataset_local_filename}'
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime.now() - timedelta(hours=1),
+    'start_date': datetime.now() - timedelta(days=1),
     'email_on_failure': False,
     'email_on_retry': False,
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
 }
 
 with DAG(
     dag_id='dogs_cats_scenario',
     default_args=default_args,
     tags=['example'],
-    schedule_interval='10 */2 * * *',
+    schedule_interval='0 22 * * *',
+    catchup=False,
 ) as dag:
 
     def callable_virtualenv(*args, dag_run, **kwargs):

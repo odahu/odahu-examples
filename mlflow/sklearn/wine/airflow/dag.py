@@ -12,17 +12,14 @@ from odahuflow.airflow_plugin.training import TrainingOperator, TrainingSensor
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
-    'start_date': datetime.now() - timedelta(hours=1),
+    'start_date': datetime.now() - timedelta(hours=2),
     'email_on_failure': False,
     'email_on_retry': False,
     'end_date': datetime(2099, 12, 31),
-    'retries': 1,
-    'retry_delay': timedelta(minutes=5),
 }
 
 api_connection_id = "odahuflow_api"
 model_connection_id = "odahuflow_model"
-
 
 training_id = "airflow-wine"
 training = ModelTraining(
@@ -90,7 +87,8 @@ model_example_request = {
 dag = DAG(
     'airflow-wine',
     default_args=default_args,
-    schedule_interval='10 * * * *',
+    schedule_interval='0 0/2 * * *',
+    catchup=False,
 )
 
 with dag:

@@ -57,7 +57,7 @@ model_example_request = {
 dag = DAG(
     'airflow-wine-from-yamls',
     default_args=default_args,
-    schedule_interval='@hourly',
+    catchup=False,
 )
 
 with dag:
