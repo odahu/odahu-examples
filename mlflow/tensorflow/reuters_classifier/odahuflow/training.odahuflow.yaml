@@ -7,6 +7,7 @@ spec:
   toolchain: mlflow  # MLFlow training toolchain integration
   entrypoint: main
   workDir: mlflow/tensorflow/reuters_classifier # MLproject location (in GitHub)
+  dataNotRequired: true
   hyperParameters:
     maxwords: "999"
   resources:
