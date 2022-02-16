@@ -1,0 +1,11 @@
+kind: ModelPackaging
+spec:
+  artifactName: "<fill-in>"
+  integrationName: docker-cli
+  resources:
+    limits:
+      cpu: "1.5"
+      memory: 4Gi
+    requests:
+      cpu: "1.5"
+      memory: 2Gi
