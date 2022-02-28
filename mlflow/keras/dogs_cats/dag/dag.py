@@ -104,7 +104,7 @@ with DAG(
                 name='dogs-cats-classifier',
                 version='1'
             ),
-            toolchain='mlflow-project',
+            training_integration='mlflow-project',
             entrypoint='main',
             work_dir='mlflow/keras/dogs_cats',
             hyper_parameters={

@@ -4,7 +4,7 @@ spec:
   model:
     name: reuters-classifier
     version: 1.0
-  toolchain: mlflow  # MLFlow training toolchain integration
+  trainingIntegration: mlflow  # MLFlow training integration
   entrypoint: main
   workDir: mlflow/tensorflow/reuters_classifier # MLproject location (in GitHub)
   hyperParameters:

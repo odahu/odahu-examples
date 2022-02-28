@@ -40,7 +40,7 @@ It must be the same bucket as specified in `models-output` Connection.
 1. Submit `ModelTraining` to ODAHU and wait for it to complete. Model Training requests Nvidia GPU. With 50 epochs and
    GPU training takes about 90 minutes. To reduce that time (and accuracy) you can set smaller number of epochs 
    in Training specification. <br>
-   `ModelTraining` uses `mlflow-project` Toolchain, which means that input file structure must be an MLFlow Project
+   `ModelTraining` uses `mlflow-project` Training integration, which means that input file structure must be an MLFlow Project
    and output file structure is arbitrary and is formed by user in `train.py`. In this example we save trained Keras
    model in TensorFlow SavedModel format.
    
